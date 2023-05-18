@@ -9,11 +9,11 @@ using ProyectoRRHH.Models;
 
 namespace ProyectoRRHH.Controllers
 {
-    public class empleadoesController : Controller
+    public class EmpleadosController : Controller
     {
         private readonly rrhhContext _context;
 
-        public empleadoesController(rrhhContext context)
+        public EmpleadosController(rrhhContext context)
         {
             _context = context;
         }
