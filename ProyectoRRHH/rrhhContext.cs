@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using ProyectoRRHH.Models;
 
-namespace ProyectoRRHH.Models;
+namespace ProyectoRRHH;
 
 public partial class rrhhContext : DbContext
 {
@@ -191,6 +192,8 @@ public partial class rrhhContext : DbContext
         {
             entity.HasNoKey();
 
+
+            entity.HasKey(e => e.id).HasName("pk_usuarios_id");
             entity.Property(e => e.clave).HasMaxLength(50);
             entity.Property(e => e.correo).HasMaxLength(50);
             entity.Property(e => e.nombre).HasMaxLength(50);
