@@ -1,116 +1,154 @@
-CREATE TABLE rol(
-	id SERIAL,
-	descripcion varchar(50),
-	CONSTRAINT pk_rol_id PRIMARY KEY (id)
+CREATE TABLE Roles(
+	Id SERIAL,
+	Descripcion VARCHAR(50),
+	CONSTRAINT pk_rol_id PRIMARY KEY (Id)
 );
 
 
-CREATE TABLE usuarios(
-	id SERIAL,
-	nombre varchar(50),
-	correo varchar(50),
-	clave varchar(50),
-	CONSTRAINT pk_usuarios_id PRIMARY KEY (id),
-	idRol int references rol(id)
+CREATE TABLE Usuarios(
+	Id SERIAL,
+	Nombre VARCHAR(50),
+	Correo VARCHAR(50),
+	Clave VARCHAR(50),
+	IdRol INT,
+	CONSTRAINT pk_usuarios_id PRIMARY KEY (Id),
+	CONSTRAINT fk_usuarios_idrol FOREIGN KEY (IdRol) REFERENCES Roles(Id)
 );
 
 
-CREATE TABLE competencias(
-	id SERIAL,
-	descripcion VARCHAR(100),
-	estado BOOLEAN,
-	CONSTRAINT pk_competencia_id PRIMARY KEY (id),
-	CONSTRAINT uq_competencias_descripcionCompetencia UNIQUE (descripcion)
+CREATE TABLE Competencias(
+	Id SERIAL,
+	Descripcion VARCHAR(100),
+	Estado BOOLEAN,
+	CONSTRAINT pk_competencia_id PRIMARY KEY (Id),
+	CONSTRAINT uq_competencias_descripcionCompetencia UNIQUE (Descripcion)
 );
 
-CREATE TABLE idiomas(
-	id SERIAL,
-	nombre VARCHAR(20),
-	nivel VARCHAR(20),
-	CONSTRAINT pk_idiomas_id PRIMARY KEY (id),
-	CONSTRAINT uq_idiomas_nombre UNIQUE (nombre)
+INSERT INTO Competencias(Id, Descripcion, Estado) VALUES 
+(1, 'manejo de Recursos Humanos', true),
+(2, 'Uso de Herramientas Ofimaticas', true),
+(3, 'Gestion de Presupuesto', true),
+(4, 'hablar en publico', true);
+
+CREATE TABLE Idiomas(
+	Id SERIAL,
+	Nombre VARCHAR(20),
+	Nivel VARCHAR(20),
+	CONSTRAINT pk_idiomas_id PRIMARY KEY (Id),
+	CONSTRAINT uq_idiomas_nombre UNIQUE (Nombre)
 );
 
-CREATE TABLE capacitaciones(
-	id SERIAL,
-	descripcion VARCHAR(100),
-	nivel VARCHAR(20),
-	fechaDesde DATE,
-	fechaHasta DATE,
-	institucion VARCHAR(50),
-	CONSTRAINT pk_capacitacion_id PRIMARY KEY (id),
-	CONSTRAINT uq_capacitaciones_descripcionCapacitacion UNIQUE (descripcion)
+INSERT INTO Idiomas(Id, Nombre, Nivel) VALUES 
+(1, 'Ingles', 'C1'),
+(2, 'Español', 'C1'),
+(3, 'Frances', 'C1'),
+(4, 'Italiano', 'C1');
+
+CREATE TABLE Capacitaciones(
+	Id SERIAL,
+	Descripcion VARCHAR(100),
+	Nivel VARCHAR(20),
+	FechaDesde DATE,
+	FechaHasta DATE,
+	Institucion VARCHAR(50),
+	CONSTRAINT pk_capacitacion_id PRIMARY KEY (Id),
+	CONSTRAINT uq_capacitaciones_descripcionCapacitacion UNIQUE (Descripcion)
 );
 
-CREATE TABLE puestos(
-	id SERIAL,
-	nombre VARCHAR(50),
-	nivelRiesgo VARCHAR(10),
-	salarioMin VARCHAR(20),
-	salarioMax VARCHAR(20),
-	estado BOOLEAN,
-	CONSTRAINT pk_puesto_id PRIMARY KEY (id),
-	CONSTRAINT uq_puestos_nombre UNIQUE (nombre)
+CREATE TABLE Puestos(
+	Id SERIAL,
+	Nombre VARCHAR(50),
+	NivelRiesgo VARCHAR(10),
+	SalarioMin VARCHAR(20),
+	SalarioMax VARCHAR(20),
+	Estado BOOLEAN,
+	CONSTRAINT pk_puesto_id PRIMARY KEY (Id),
+	CONSTRAINT uq_puestos_nombre UNIQUE (Nombre)
 );
 
-CREATE TABLE departamentos(
-	id SERIAL,
-	departamento VARCHAR(50),
-	CONSTRAINT pk_departamento_id PRIMARY KEY (id),
-	CONSTRAINT uq_departamentos_departamento UNIQUE (departamento)
+CREATE TABLE Departamentos(
+	Id SERIAL,
+	Departamento VARCHAR(50),
+	CONSTRAINT pk_departamento_id PRIMARY KEY (Id),
+	CONSTRAINT uq_departamentos_departamento UNIQUE (Departamento)
 );
 
-CREATE TABLE expLaboral(
-	id SERIAL,
-	empresa VARCHAR(100),
-	puestoOcupado VARCHAR(100),
-	fechaDesde DATE,
-	fechaHasta DATE,
-	salario VARCHAR(20),
-	CONSTRAINT pk_expLaboral_id PRIMARY KEY (id),
-	CONSTRAINT uq_explaboral_empresa UNIQUE (empresa)
+/*CREATE TABLE ExpLaboral(
+	Id SERIAL,
+	Empresa VARCHAR(100),
+	PuestoOcupado VARCHAR(100),
+	FechaDesde DATE,
+	FechaHasta DATE,
+	Salario VARCHAR(20),
+	CONSTRAINT pk_expLaboral_id PRIMARY KEY (Id),
+	CONSTRAINT uq_explaboral_empresa UNIQUE (Empresa)
+);*/
+
+CREATE TABLE Candidatos(
+	Id SERIAL,
+	Cedula VARCHAR(30),
+	Nombre VARCHAR(60),
+	PuestoAspira VARCHAR(50),
+	Departamento VARCHAR(30),
+	SalarioAspira VARCHAR(10),
+	ExpLaboral VARCHAR(50),
+	Empresa VARCHAR(100),
+	PuestoOcupado VARCHAR(100),
+	FechaDesde DATE,
+	FechaHasta DATE,
+	Salario VARCHAR(20),
+	RecomendadoPor VARCHAR(60),
+	CONSTRAINT pk_candidatos_id PRIMARY KEY (Id),
+	CONSTRAINT uq_candidatos_cedula UNIQUE (Cedula),
+	CONSTRAINT fk_candidatos_puestoAspira FOREIGN KEY (PuestoAspira) REFERENCES Puestos(Nombre),
+	CONSTRAINT fk_candidatos_departamento FOREIGN KEY (Departamento) REFERENCES Departamentos(Departamento)
+);
+------------------------------------
+CREATE TABLE CandidatosCompetencias (
+	CandidatoId INT,
+	CompetenciaId INT,
+	CONSTRAINT pk_candidatos_competencias PRIMARY KEY (CandidatoId, CompetenciaId),
+	CONSTRAINT fk_candidatos_competencias_candidatoId FOREIGN KEY (CandidatoId) REFERENCES Candidatos(Id),
+	CONSTRAINT fk_candidatos_competencias_competenciaId FOREIGN KEY (CompetenciaId) REFERENCES Competencias(Id)
 );
 
-CREATE TABLE candidatos(
-	id SERIAL,
-	cedula VARCHAR(30),
-	nombre VARCHAR(60),
-	puestoAspira VARCHAR(50),
-	departamento VARCHAR(30),
-	salarioAspira VARCHAR(10),
-	competencias VARCHAR(60),
-	capacitaciones VARCHAR(60),
-	expLaboral VARCHAR(50),
-	recomendadoPor VARCHAR(60),
-	CONSTRAINT pk_candidatos_id PRIMARY KEY (id),
-	CONSTRAINT uq_candidatos_cedula UNIQUE (cedula),
-	CONSTRAINT fk_candidatos_puestoAspira FOREIGN KEY (puestoAspira) REFERENCES puestos(nombre),
-	CONSTRAINT fk_candidatos_departamento FOREIGN KEY (departamento) REFERENCES departamentos(departamento),
-	CONSTRAINT fk_candidatos_competencias FOREIGN KEY (competencias) REFERENCES competencias(descripcion),
-	CONSTRAINT fk_candidatos_capacitaciones FOREIGN KEY (capacitaciones) REFERENCES capacitaciones(descripcion),
-	CONSTRAINT fk_candidatos_expLaboral FOREIGN KEY (expLaboral) REFERENCES expLaboral(empresa)
-
+CREATE TABLE CandidatosCapacitaciones (
+	CandidatoId INT,
+	CapacitacionesId INT,
+	CONSTRAINT pk_candidatos_capacitaciones PRIMARY KEY (CandidatoId, CapacitacionesId),
+	CONSTRAINT fk_candidatos_capacitaciones_candidatoId FOREIGN KEY (CandidatoId) REFERENCES Candidatos(Id),
+	CONSTRAINT fk_candidatos_capacitaciones_competenciaId FOREIGN KEY (CapacitacionesId) REFERENCES Capacitaciones(Id)
 );
 
-CREATE TABLE empleados(
-	id SERIAL,
-	cedula VARCHAR(30),
-	nombre VARCHAR(50),
-	fechaIngreso DATE,
-	departamento VARCHAR(50),
-	puesto VARCHAR(50),
-	salarioMensual VARCHAR(10),
-	estado BOOLEAN,
-	CONSTRAINT pk_empleados_id PRIMARY KEY (id),
-	CONSTRAINT fk_empleados_cedula FOREIGN KEY (cedula) REFERENCES candidatos(cedula),
-	CONSTRAINT uq_empleados_cedula UNIQUE (cedula),
-	CONSTRAINT fk_empleados_departamento FOREIGN KEY (departamento) REFERENCES departamentos(departamento),
-	CONSTRAINT fk_empleados_puesto FOREIGN KEY (puesto) REFERENCES puestos(nombre)
+CREATE TABLE CandidatosIdiomas (
+	CandidatoId INT,
+	IdiomasId INT,
+	CONSTRAINT pk_candidatos_idiomas PRIMARY KEY (CandidatoId, IdiomasId),
+	CONSTRAINT fk_candidatos_idiomas_candidatoId FOREIGN KEY (CandidatoId) REFERENCES Candidatos(Id),
+	CONSTRAINT fk_candidatos_idiomas_idiomasId FOREIGN KEY (IdiomasId) REFERENCES Idiomas(Id)
+);
+--------------------------------------
+CREATE TABLE Empleados(
+	Id SERIAL,
+	Cedula VARCHAR(30),
+	Nombre VARCHAR(50),
+	FechaIngreso DATE,
+	Departamento VARCHAR(50),
+	Puesto VARCHAR(50),
+	SalarioMensual VARCHAR(10),
+	Estado BOOLEAN,
+	CONSTRAINT pk_empleados_id PRIMARY KEY (Id),
+	CONSTRAINT fk_empleados_cedula FOREIGN KEY (Cedula) REFERENCES Candidatos(Cedula),
+	CONSTRAINT uq_empleados_cedula UNIQUE (Cedula),
+	CONSTRAINT fk_empleados_departamento FOREIGN KEY (Departamento) REFERENCES Departamentos(Departamento),
+	CONSTRAINT fk_empleados_puesto FOREIGN KEY (Puesto) REFERENCES Puestos(Nombre)
 );
 
 
-insert into rol(id,descripcion) values(1,'Administrador')
-insert into rol(id,descripcion) values(2,'Candidato')
+INSERT INTO Roles(Id, Descripcion) VALUES 
+(1, 'Administrador'), 
+(2, 'Candidato');
 
-insert into usuarios(id,nombre,correo,clave,idRol) values(1,'Rocio','ro@gmail.com','123',1)
-insert into usuarios(id,nombre,correo,clave,idRol) values(2,'Albert','ab@gmail.com','456',2)
+INSERT INTO Usuarios(id,nombre,correo,clave,idRol) VALUES 
+(1, 'Rocio', 'ro@gmail.com', '123', 1), 
+(2, 'Albert', 'ab@gmail.com', '456', 2);

@@ -7,13 +7,13 @@ public partial class puesto
 {
     public int id { get; set; }
 
-    public string nombre { get; set; } = null!;
+    public string nombre { get; set; }
 
-    public string? nivelriesgo { get; set; }
+    public string nivelriesgo { get; set; }
 
-    public string? salariomin { get; set; }
+    public string salariomin { get; set; }
 
-    public string? salariomax { get; set; }
+    public string salariomax { get; set; }
 
     public bool? estado { get; set; }
 

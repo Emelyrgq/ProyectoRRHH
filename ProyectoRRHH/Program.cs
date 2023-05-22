@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ProyectoRRHH;
+using ProyectoRRHH.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<rrhhContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("rrhh_connection")));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+/*builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<rrhhContext>();
 
 
@@ -33,7 +34,7 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireAdminRole", policy =>
         policy.RequireRole("Admin"));
-});
+});*/
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

@@ -9,24 +9,22 @@ using ProyectoRRHH.Models;
 
 namespace ProyectoRRHH.Controllers
 {
-    public class idiomasController : Controller
+    public class IdiomasController : Controller
     {
         private readonly rrhhContext _context;
 
-        public idiomasController(rrhhContext context)
+        public IdiomasController(rrhhContext context)
         {
             _context = context;
         }
 
-        // GET: idiomas
+        // GET: Idiomas
         public async Task<IActionResult> Index()
         {
-              return _context.idiomas != null ? 
-                          View(await _context.idiomas.ToListAsync()) :
-                          Problem("Entity set 'rrhhContext.idiomas'  is null.");
+              return View(await _context.idiomas.ToListAsync());
         }
 
-        // GET: idiomas/Details/5
+        // GET: Idiomas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.idiomas == null)
@@ -44,13 +42,13 @@ namespace ProyectoRRHH.Controllers
             return View(idioma);
         }
 
-        // GET: idiomas/Create
+        // GET: Idiomas/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: idiomas/Create
+        // POST: Idiomas/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -66,7 +64,7 @@ namespace ProyectoRRHH.Controllers
             return View(idioma);
         }
 
-        // GET: idiomas/Edit/5
+        // GET: Idiomas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.idiomas == null)
@@ -82,7 +80,7 @@ namespace ProyectoRRHH.Controllers
             return View(idioma);
         }
 
-        // POST: idiomas/Edit/5
+        // POST: Idiomas/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -117,7 +115,7 @@ namespace ProyectoRRHH.Controllers
             return View(idioma);
         }
 
-        // GET: idiomas/Delete/5
+        // GET: Idiomas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.idiomas == null)
@@ -135,7 +133,7 @@ namespace ProyectoRRHH.Controllers
             return View(idioma);
         }
 
-        // POST: idiomas/Delete/5
+        // POST: Idiomas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -156,7 +154,7 @@ namespace ProyectoRRHH.Controllers
 
         private bool idiomaExists(int id)
         {
-          return (_context.idiomas?.Any(e => e.id == id)).GetValueOrDefault();
+          return _context.idiomas.Any(e => e.id == id);
         }
     }
 }

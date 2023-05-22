@@ -9,24 +9,22 @@ using ProyectoRRHH.Models;
 
 namespace ProyectoRRHH.Controllers
 {
-    public class capacitacionesController : Controller
+    public class CapacitacionesController : Controller
     {
         private readonly rrhhContext _context;
 
-        public capacitacionesController(rrhhContext context)
+        public CapacitacionesController(rrhhContext context)
         {
             _context = context;
         }
 
-        // GET: capacitaciones
+        // GET: Capacitaciones
         public async Task<IActionResult> Index()
         {
-              return _context.capacitaciones != null ? 
-                          View(await _context.capacitaciones.ToListAsync()) :
-                          Problem("Entity set 'rrhhContext.capacitaciones'  is null.");
+              return View(await _context.capacitaciones.ToListAsync());
         }
 
-        // GET: capacitaciones/Details/5
+        // GET: Capacitaciones/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.capacitaciones == null)
@@ -44,13 +42,13 @@ namespace ProyectoRRHH.Controllers
             return View(capacitacione);
         }
 
-        // GET: capacitaciones/Create
+        // GET: Capacitaciones/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: capacitaciones/Create
+        // POST: Capacitaciones/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -66,7 +64,7 @@ namespace ProyectoRRHH.Controllers
             return View(capacitacione);
         }
 
-        // GET: capacitaciones/Edit/5
+        // GET: Capacitaciones/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.capacitaciones == null)
@@ -82,7 +80,7 @@ namespace ProyectoRRHH.Controllers
             return View(capacitacione);
         }
 
-        // POST: capacitaciones/Edit/5
+        // POST: Capacitaciones/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -117,7 +115,7 @@ namespace ProyectoRRHH.Controllers
             return View(capacitacione);
         }
 
-        // GET: capacitaciones/Delete/5
+        // GET: Capacitaciones/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.capacitaciones == null)
@@ -135,7 +133,7 @@ namespace ProyectoRRHH.Controllers
             return View(capacitacione);
         }
 
-        // POST: capacitaciones/Delete/5
+        // POST: Capacitaciones/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -156,7 +154,7 @@ namespace ProyectoRRHH.Controllers
 
         private bool capacitacioneExists(int id)
         {
-          return (_context.capacitaciones?.Any(e => e.id == id)).GetValueOrDefault();
+          return _context.capacitaciones.Any(e => e.id == id);
         }
     }
 }

@@ -18,14 +18,19 @@ namespace ProyectoRRHH.Controllers
             _context = context;
         }
 
-        // GET: candidatoes
+        // GET: Candidatos
         public async Task<IActionResult> Index()
         {
-            var rrhhContext = _context.candidatos.Include(c => c.capacitacionesNavigation).Include(c => c.competenciasNavigation).Include(c => c.departamentoNavigation).Include(c => c.explaboralNavigation).Include(c => c.puestoaspiraNavigation);
+            var rrhhContext =  _context.candidatos
+                .Include(c => c.capacitaciones)
+                .Include(c => c.competencia)
+                .Include(c => c.idiomas)
+                .Include(c => c.departamentoNavigation)
+                .Include(c => c.puestoaspiraNavigation);
             return View(await rrhhContext.ToListAsync());
         }
 
-        // GET: candidatoes/Details/5
+        // GET: Candidatos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.candidatos == null)
@@ -34,10 +39,10 @@ namespace ProyectoRRHH.Controllers
             }
 
             var candidato = await _context.candidatos
-                .Include(c => c.capacitacionesNavigation)
-                .Include(c => c.competenciasNavigation)
+                .Include(c => c.capacitaciones)
+                .Include(c => c.competencia)
+                .Include(c => c.idiomas)
                 .Include(c => c.departamentoNavigation)
-                .Include(c => c.explaboralNavigation)
                 .Include(c => c.puestoaspiraNavigation)
                 .FirstOrDefaultAsync(m => m.id == id);
             if (candidato == null)
@@ -48,39 +53,53 @@ namespace ProyectoRRHH.Controllers
             return View(candidato);
         }
 
-        // GET: candidatoes/Create
+        // GET: Candidatos/Create
         public IActionResult Create()
         {
-            ViewData["capacitaciones"] = new SelectList(_context.capacitaciones, "descripcion", "descripcion");
-            ViewData["competencias"] = new SelectList(_context.competencias, "descripcion", "descripcion");
+            ViewData["competencias"] = new SelectList(_context.competencias, "id", "descripcion");
+            ViewData["capacitaciones"] = new SelectList(_context.capacitaciones, "id", "descripcion");
+            ViewData["idiomas"] = new SelectList(_context.idiomas, "id", "nombre");
             ViewData["departamento"] = new SelectList(_context.departamentos, "departamento1", "departamento1");
-            ViewData["explaboral"] = new SelectList(_context.explaborals, "empresa", "empresa");
             ViewData["puestoaspira"] = new SelectList(_context.puestos, "nombre", "nombre");
             return View();
         }
 
-        // POST: candidatoes/Create
+        // POST: Candidatos/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,cedula,nombre,puestoaspira,departamento,salarioaspira,competencias,capacitaciones,explaboral,recomendadopor")] candidato candidato)
+        public async Task<IActionResult> Create([Bind("id,cedula,nombre,puestoaspira,departamento,salarioaspira,explaboral,empresa,puestoocupado,fechadesde,fechahasta,salario,recomendadopor")] candidato candidato)
         {
             if (ModelState.IsValid)
             {
+                var competenciasIds = Request.Form["competencia"].Select(x => int.Parse(x)).ToArray();
+                var competencias = _context.competencias.Where(x => competenciasIds.Contains(x.id)).ToList();
+                candidato.competencia = competencias;
+
+                var capacitacionesIds = Request.Form["capacitaciones"].Select(x => int.Parse(x)).ToArray();
+                var capacitaciones = _context.capacitaciones.Where(x => capacitacionesIds.Contains(x.id)).ToList();
+                candidato.capacitaciones = capacitaciones;
+
+                var idiomasIds = Request.Form["idiomas"].Select(x => int.Parse(x)).ToArray();
+                var idiomas = _context.idiomas.Where(x => idiomasIds.Contains(x.id)).ToList();
+                candidato.idiomas = idiomas;
+
+
                 _context.Add(candidato);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["capacitaciones"] = new SelectList(_context.capacitaciones, "descripcion", "descripcion", candidato.capacitaciones);
-            ViewData["competencias"] = new SelectList(_context.competencias, "descripcion", "descripcion", candidato.competencias);
+
+            ViewData["competencias"] = new SelectList(_context.competencias, "id", "descripcion", candidato.competencia);
+            ViewData["capacitaciones"] = new SelectList(_context.capacitaciones, "id", "descripcion", candidato.capacitaciones);
+            ViewData["idiomas"] = new SelectList(_context.idiomas, "id", "nombre", candidato.idiomas);
             ViewData["departamento"] = new SelectList(_context.departamentos, "departamento1", "departamento1", candidato.departamento);
-            ViewData["explaboral"] = new SelectList(_context.explaborals, "empresa", "empresa", candidato.explaboral);
             ViewData["puestoaspira"] = new SelectList(_context.puestos, "nombre", "nombre", candidato.puestoaspira);
             return View(candidato);
         }
 
-        // GET: candidatoes/Edit/5
+        // GET: Candidatos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.candidatos == null)
@@ -93,20 +112,20 @@ namespace ProyectoRRHH.Controllers
             {
                 return NotFound();
             }
-            ViewData["capacitaciones"] = new SelectList(_context.capacitaciones, "descripcion", "descripcion", candidato.capacitaciones);
-            ViewData["competencias"] = new SelectList(_context.competencias, "descripcion", "descripcion", candidato.competencias);
+            ViewData["competencias"] = new SelectList(_context.competencias, "id", "descripcion", candidato.competencia);
+            ViewData["capacitaciones"] = new SelectList(_context.capacitaciones, "id", "descripcion", candidato.capacitaciones);
+            ViewData["idiomas"] = new SelectList(_context.idiomas, "id", "nombre", candidato.idiomas);
             ViewData["departamento"] = new SelectList(_context.departamentos, "departamento1", "departamento1", candidato.departamento);
-            ViewData["explaboral"] = new SelectList(_context.explaborals, "empresa", "empresa", candidato.explaboral);
             ViewData["puestoaspira"] = new SelectList(_context.puestos, "nombre", "nombre", candidato.puestoaspira);
             return View(candidato);
         }
 
-        // POST: candidatoes/Edit/5
+        // POST: Candidatos/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,cedula,nombre,puestoaspira,departamento,salarioaspira,competencias,capacitaciones,explaboral,recomendadopor")] candidato candidato)
+        public async Task<IActionResult> Edit(int id, [Bind("id,cedula,nombre,puestoaspira,departamento,salarioaspira,explaboral,empresa,puestoocupado,fechadesde,fechahasta,salario,recomendadopor")] candidato candidato)
         {
             if (id != candidato.id)
             {
@@ -133,15 +152,15 @@ namespace ProyectoRRHH.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["capacitaciones"] = new SelectList(_context.capacitaciones, "descripcion", "descripcion", candidato.capacitaciones);
-            ViewData["competencias"] = new SelectList(_context.competencias, "descripcion", "descripcion", candidato.competencias);
+            ViewData["competencias"] = new SelectList(_context.competencias, "id", "descripcion", candidato.competencia);
+            ViewData["capacitaciones"] = new SelectList(_context.capacitaciones, "id", "descripcion", candidato.capacitaciones);
+            ViewData["idiomas"] = new SelectList(_context.idiomas, "id", "nombre", candidato.idiomas);
             ViewData["departamento"] = new SelectList(_context.departamentos, "departamento1", "departamento1", candidato.departamento);
-            ViewData["explaboral"] = new SelectList(_context.explaborals, "empresa", "empresa", candidato.explaboral);
             ViewData["puestoaspira"] = new SelectList(_context.puestos, "nombre", "nombre", candidato.puestoaspira);
             return View(candidato);
         }
 
-        // GET: candidatoes/Delete/5
+        // GET: Candidatos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.candidatos == null)
@@ -150,10 +169,10 @@ namespace ProyectoRRHH.Controllers
             }
 
             var candidato = await _context.candidatos
-                .Include(c => c.capacitacionesNavigation)
-                .Include(c => c.competenciasNavigation)
+                .Include(c => c.capacitaciones)
+                .Include(c => c.competencia)
+                .Include(c => c.idiomas)
                 .Include(c => c.departamentoNavigation)
-                .Include(c => c.explaboralNavigation)
                 .Include(c => c.puestoaspiraNavigation)
                 .FirstOrDefaultAsync(m => m.id == id);
             if (candidato == null)
@@ -164,7 +183,7 @@ namespace ProyectoRRHH.Controllers
             return View(candidato);
         }
 
-        // POST: candidatoes/Delete/5
+        // POST: Candidatos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -185,7 +204,7 @@ namespace ProyectoRRHH.Controllers
 
         private bool candidatoExists(int id)
         {
-          return (_context.candidatos?.Any(e => e.id == id)).GetValueOrDefault();
+          return _context.candidatos.Any(e => e.id == id);
         }
     }
 }

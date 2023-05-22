@@ -7,7 +7,7 @@ public partial class departamento
 {
     public int id { get; set; }
 
-    public string departamento1 { get; set; } = null!;
+    public string departamento1 { get; set; }
 
     public virtual ICollection<candidato> candidatos { get; set; } = new List<candidato>();
 

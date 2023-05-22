@@ -21,9 +21,7 @@ namespace ProyectoRRHH.Controllers
         // GET: competencias
         public async Task<IActionResult> Index()
         {
-              return _context.competencias != null ? 
-                          View(await _context.competencias.ToListAsync()) :
-                          Problem("Entity set 'rrhhContext.competencias'  is null.");
+              return View(await _context.competencias.ToListAsync());
         }
 
         // GET: competencias/Details/5
@@ -156,7 +154,7 @@ namespace ProyectoRRHH.Controllers
 
         private bool competenciaExists(int id)
         {
-          return (_context.competencias?.Any(e => e.id == id)).GetValueOrDefault();
+          return _context.competencias.Any(e => e.id == id);
         }
     }
 }

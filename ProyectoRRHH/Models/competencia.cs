@@ -7,7 +7,7 @@ public partial class competencia
 {
     public int id { get; set; }
 
-    public string descripcion { get; set; } = null!;
+    public string descripcion { get; set; }
 
     public bool? estado { get; set; }
 
