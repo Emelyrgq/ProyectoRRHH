@@ -30,34 +30,7 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.salarioaspira)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.competencia)
-        </dt>
-        <dd class="col-sm-10">
-            @{
-                var competencias = String.Join(", ", Model.competencia.Select(x => x.descripcion).ToArray());
-            }
-            @Html.DisplayFor(model => competencias)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.capacitaciones)
-        </dt>
-        <dd class="col-sm-10">
-            @{
-                var capacitaciones = String.Join(", ", Model.capacitaciones.Select(x => x.descripcion).ToArray());
-            }
-            @Html.DisplayFor(model => capacitaciones)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.idiomas)
-        </dt>
-        <dd class="col-sm-10">
-            @{
-                var idiomas = String.Join(", ", Model.idiomas.Select(x => x.nombre).ToArray());
-            }
-            @Html.DisplayFor(model => idiomas)
-        </dd>
-        <dt class="col-sm-2">
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.explaboral)
         </dt>
         <dd class = "col-sm-10">

@@ -21,8 +21,7 @@ namespace ProyectoRRHH.Controllers
         // GET: Candidatos
         public async Task<IActionResult> Index()
         {
-            var rrhhContext =  _context.candidatos
-                .Include(c => c.capacitaciones)
+            var rrhhContext = _context.candidatos
                 .Include(c => c.competencia)
                 .Include(c => c.idiomas)
                 .Include(c => c.departamentoNavigation)
@@ -39,7 +38,6 @@ namespace ProyectoRRHH.Controllers
             }
 
             var candidato = await _context.candidatos
-                .Include(c => c.capacitaciones)
                 .Include(c => c.competencia)
                 .Include(c => c.idiomas)
                 .Include(c => c.departamentoNavigation)
@@ -57,7 +55,6 @@ namespace ProyectoRRHH.Controllers
         public IActionResult Create()
         {
             ViewData["competencias"] = new SelectList(_context.competencias, "id", "descripcion");
-            ViewData["capacitaciones"] = new SelectList(_context.capacitaciones, "id", "descripcion");
             ViewData["idiomas"] = new SelectList(_context.idiomas, "id", "nombre");
             ViewData["departamento"] = new SelectList(_context.departamentos, "departamento1", "departamento1");
             ViewData["puestoaspira"] = new SelectList(_context.puestos, "nombre", "nombre");
@@ -77,22 +74,15 @@ namespace ProyectoRRHH.Controllers
                 var competencias = _context.competencias.Where(x => competenciasIds.Contains(x.id)).ToList();
                 candidato.competencia = competencias;
 
-                var capacitacionesIds = Request.Form["capacitaciones"].Select(x => int.Parse(x)).ToArray();
-                var capacitaciones = _context.capacitaciones.Where(x => capacitacionesIds.Contains(x.id)).ToList();
-                candidato.capacitaciones = capacitaciones;
-
                 var idiomasIds = Request.Form["idiomas"].Select(x => int.Parse(x)).ToArray();
                 var idiomas = _context.idiomas.Where(x => idiomasIds.Contains(x.id)).ToList();
                 candidato.idiomas = idiomas;
-
 
                 _context.Add(candidato);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-
             ViewData["competencias"] = new SelectList(_context.competencias, "id", "descripcion", candidato.competencia);
-            ViewData["capacitaciones"] = new SelectList(_context.capacitaciones, "id", "descripcion", candidato.capacitaciones);
             ViewData["idiomas"] = new SelectList(_context.idiomas, "id", "nombre", candidato.idiomas);
             ViewData["departamento"] = new SelectList(_context.departamentos, "departamento1", "departamento1", candidato.departamento);
             ViewData["puestoaspira"] = new SelectList(_context.puestos, "nombre", "nombre", candidato.puestoaspira);
@@ -113,7 +103,6 @@ namespace ProyectoRRHH.Controllers
                 return NotFound();
             }
             ViewData["competencias"] = new SelectList(_context.competencias, "id", "descripcion", candidato.competencia);
-            ViewData["capacitaciones"] = new SelectList(_context.capacitaciones, "id", "descripcion", candidato.capacitaciones);
             ViewData["idiomas"] = new SelectList(_context.idiomas, "id", "nombre", candidato.idiomas);
             ViewData["departamento"] = new SelectList(_context.departamentos, "departamento1", "departamento1", candidato.departamento);
             ViewData["puestoaspira"] = new SelectList(_context.puestos, "nombre", "nombre", candidato.puestoaspira);
@@ -153,7 +142,6 @@ namespace ProyectoRRHH.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["competencias"] = new SelectList(_context.competencias, "id", "descripcion", candidato.competencia);
-            ViewData["capacitaciones"] = new SelectList(_context.capacitaciones, "id", "descripcion", candidato.capacitaciones);
             ViewData["idiomas"] = new SelectList(_context.idiomas, "id", "nombre", candidato.idiomas);
             ViewData["departamento"] = new SelectList(_context.departamentos, "departamento1", "departamento1", candidato.departamento);
             ViewData["puestoaspira"] = new SelectList(_context.puestos, "nombre", "nombre", candidato.puestoaspira);
@@ -169,7 +157,6 @@ namespace ProyectoRRHH.Controllers
             }
 
             var candidato = await _context.candidatos
-                .Include(c => c.capacitaciones)
                 .Include(c => c.competencia)
                 .Include(c => c.idiomas)
                 .Include(c => c.departamentoNavigation)

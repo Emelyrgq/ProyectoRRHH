@@ -23,15 +23,6 @@
                 @Html.DisplayNameFor(model => model.salarioaspira)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.competencia)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.capacitaciones)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.idiomas)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.explaboral)
             </th>
             <th>
@@ -73,24 +64,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.salarioaspira)
             </td>
-                <td>
-                    @{
-                        var competencias = String.Join(", ", item.competencia.Select(x => x.descripcion).ToArray());
-                    }
-                    @Html.DisplayFor(modelItem => competencias)
-                </td>
-                 <td>
-                    @{
-                        var capacitaciones = String.Join(", ", item.capacitaciones.Select(x => x.descripcion).ToArray());
-                    }
-                    @Html.DisplayFor(modelItem => capacitaciones)
-                </td>
-                <td>
-                    @{
-                        var idiomas = String.Join(", ", item.idiomas.Select(x => x.nombre).ToArray());
-                    }
-                    @Html.DisplayFor(modelItem => idiomas)
-                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.explaboral)
             </td>

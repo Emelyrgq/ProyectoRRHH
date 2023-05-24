@@ -1,16 +1,24 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using ProyectoRRHH;
-using ProyectoRRHH.Models;
+using ProyectoRRHH.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<rrhhContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("rrhh_connection")));
+//Add Identity
 
-/*builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+/*builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+    options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<rrhhContext>();
+
+
+// Configurar la autenticación y autorización
+
+builder.Services.AddControllersWithViews();
 
 
 builder.Services.Configure<IdentityOptions>(options =>
@@ -25,12 +33,12 @@ builder.Services.AddAuthentication()
         options.Cookie.Name = "ProyectoRRHH.AuthCookie";
         options.Cookie.HttpOnly = true;
         options.ExpireTimeSpan = TimeSpan.FromDays(30);
-        options.LoginPath = "/Account/Login";
-        options.AccessDeniedPath = "/Account/AccessDenied";
+        options.LoginPath = "/Usuarios/Login";
+        options.AccessDeniedPath = "/Usuarios/AccessDenied";
         options.SlidingExpiration = true;
-    });
+    });*/
 
-builder.Services.AddAuthorization(options =>
+/*builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireAdminRole", policy =>
         policy.RequireRole("Admin"));
@@ -67,7 +75,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Login}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
 
