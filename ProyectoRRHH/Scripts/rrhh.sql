@@ -1,3 +1,11 @@
+CREATE TABLE Usuarios(
+	Id SERIAL,
+	Email VARCHAR(100),
+	EmailNormalizado VARCHAR,
+	Password VARCHAR(100),
+	CONSTRAINT pk_usuario_id PRIMARY KEY (Id)
+);
+
 CREATE TABLE Competencias(
 	Id SERIAL,
 	Descripcion VARCHAR(100),
