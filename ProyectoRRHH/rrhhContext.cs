@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ProyectoRRHH.Models;
 
 namespace ProyectoRRHH;
 
-public partial class rrhhContext : DbContext
+public partial class rrhhContext : IdentityDbContext
 {
     public rrhhContext()
     {
@@ -30,6 +31,7 @@ public partial class rrhhContext : DbContext
 
     public virtual DbSet<puesto> puestos { get; set; }
 
+    public virtual DbSet<usuario> usuarios { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -183,6 +185,15 @@ public partial class rrhhContext : DbContext
                 .HasMaxLength(50);
             entity.Property(e => e.salariomax).HasMaxLength(20);
             entity.Property(e => e.salariomin).HasMaxLength(20);
+        });
+
+        modelBuilder.Entity<usuario>(entity =>
+        {
+            entity.HasKey(e => e.id).HasName("pk_usuario_id");
+
+            entity.Property(e => e.email).HasMaxLength(100);
+            entity.Property(e => e.emailnormalizado).HasColumnType("character varying");
+            entity.Property(e => e.password).HasMaxLength(100);
         });
 
         OnModelCreatingPartial(modelBuilder);

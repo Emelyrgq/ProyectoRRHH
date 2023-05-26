@@ -1,21 +1,3 @@
-CREATE TABLE Roles(
-	Id SERIAL,
-	Descripcion VARCHAR(50),
-	CONSTRAINT pk_rol_id PRIMARY KEY (Id)
-);
-
-
-CREATE TABLE Usuarios(
-	Id SERIAL,
-	Nombre VARCHAR(50),
-	Correo VARCHAR(50),
-	Clave VARCHAR(50),
-	IdRol INT,
-	CONSTRAINT pk_usuarios_id PRIMARY KEY (Id),
-	CONSTRAINT fk_usuarios_idrol FOREIGN KEY (IdRol) REFERENCES Roles(Id)
-);
-
-
 CREATE TABLE Competencias(
 	Id SERIAL,
 	Descripcion VARCHAR(100),
@@ -44,16 +26,7 @@ INSERT INTO Idiomas(Id, Nombre, Nivel) VALUES
 (3, 'Frances', 'C1'),
 (4, 'Italiano', 'C1');
 
-CREATE TABLE Capacitaciones(
-	Id SERIAL,
-	Descripcion VARCHAR(100),
-	Nivel VARCHAR(20),
-	FechaDesde DATE,
-	FechaHasta DATE,
-	Institucion VARCHAR(50),
-	CONSTRAINT pk_capacitacion_id PRIMARY KEY (Id),
-	CONSTRAINT uq_capacitaciones_descripcionCapacitacion UNIQUE (Descripcion)
-);
+
 
 CREATE TABLE Puestos(
 	Id SERIAL,
@@ -100,32 +73,46 @@ CREATE TABLE Candidatos(
 	RecomendadoPor VARCHAR(60),
 	CONSTRAINT pk_candidatos_id PRIMARY KEY (Id),
 	CONSTRAINT uq_candidatos_cedula UNIQUE (Cedula),
-	CONSTRAINT fk_candidatos_puestoAspira FOREIGN KEY (PuestoAspira) REFERENCES Puestos(Nombre),
-	CONSTRAINT fk_candidatos_departamento FOREIGN KEY (Departamento) REFERENCES Departamentos(Departamento)
+	CONSTRAINT fk_candidatos_puestoAspira FOREIGN KEY (PuestoAspira) REFERENCES Puestos(Nombre) ON DELETE CASCADE,
+	CONSTRAINT fk_candidatos_departamento FOREIGN KEY (Departamento) REFERENCES Departamentos(Departamento) ON DELETE CASCADE
+);
+
+CREATE TABLE Capacitaciones(
+	Id SERIAL,
+	candidato_id INT,
+	Descripcion VARCHAR(100),
+	Nivel VARCHAR(20),
+	FechaDesde DATE,
+	FechaHasta DATE,
+	Institucion VARCHAR(50),
+	CONSTRAINT pk_capacitacion_id PRIMARY KEY (Id),
+	/*CONSTRAINT uq_capacitaciones_descripcionCapacitacion UNIQUE (Descripcion),*/
+	FOREIGN KEY (candidato_id) REFERENCES Candidatos (id) ON DELETE CASCADE
+
 );
 ------------------------------------
 CREATE TABLE CandidatosCompetencias (
 	CandidatoId INT,
 	CompetenciaId INT,
 	CONSTRAINT pk_candidatos_competencias PRIMARY KEY (CandidatoId, CompetenciaId),
-	CONSTRAINT fk_candidatos_competencias_candidatoId FOREIGN KEY (CandidatoId) REFERENCES Candidatos(Id),
-	CONSTRAINT fk_candidatos_competencias_competenciaId FOREIGN KEY (CompetenciaId) REFERENCES Competencias(Id)
+	CONSTRAINT fk_candidatos_competencias_candidatoId FOREIGN KEY (CandidatoId) REFERENCES Candidatos(Id) ON DELETE CASCADE,
+	CONSTRAINT fk_candidatos_competencias_competenciaId FOREIGN KEY (CompetenciaId) REFERENCES Competencias(Id) ON DELETE CASCADE
 );
 
-CREATE TABLE CandidatosCapacitaciones (
+/*CREATE TABLE CandidatosCapacitaciones (
 	CandidatoId INT,
 	CapacitacionesId INT,
 	CONSTRAINT pk_candidatos_capacitaciones PRIMARY KEY (CandidatoId, CapacitacionesId),
 	CONSTRAINT fk_candidatos_capacitaciones_candidatoId FOREIGN KEY (CandidatoId) REFERENCES Candidatos(Id),
 	CONSTRAINT fk_candidatos_capacitaciones_competenciaId FOREIGN KEY (CapacitacionesId) REFERENCES Capacitaciones(Id)
-);
+);*/
 
 CREATE TABLE CandidatosIdiomas (
 	CandidatoId INT,
 	IdiomasId INT,
 	CONSTRAINT pk_candidatos_idiomas PRIMARY KEY (CandidatoId, IdiomasId),
-	CONSTRAINT fk_candidatos_idiomas_candidatoId FOREIGN KEY (CandidatoId) REFERENCES Candidatos(Id),
-	CONSTRAINT fk_candidatos_idiomas_idiomasId FOREIGN KEY (IdiomasId) REFERENCES Idiomas(Id)
+	CONSTRAINT fk_candidatos_idiomas_candidatoId FOREIGN KEY (CandidatoId) REFERENCES Candidatos(Id) ON DELETE CASCADE,
+	CONSTRAINT fk_candidatos_idiomas_idiomasId FOREIGN KEY (IdiomasId) REFERENCES Idiomas(Id) ON DELETE CASCADE
 );
 --------------------------------------
 CREATE TABLE Empleados(
@@ -138,17 +125,23 @@ CREATE TABLE Empleados(
 	SalarioMensual VARCHAR(10),
 	Estado BOOLEAN,
 	CONSTRAINT pk_empleados_id PRIMARY KEY (Id),
-	CONSTRAINT fk_empleados_cedula FOREIGN KEY (Cedula) REFERENCES Candidatos(Cedula),
+	CONSTRAINT fk_empleados_cedula FOREIGN KEY (Cedula) REFERENCES Candidatos(Cedula) ON DELETE CASCADE,
 	CONSTRAINT uq_empleados_cedula UNIQUE (Cedula),
-	CONSTRAINT fk_empleados_departamento FOREIGN KEY (Departamento) REFERENCES Departamentos(Departamento),
-	CONSTRAINT fk_empleados_puesto FOREIGN KEY (Puesto) REFERENCES Puestos(Nombre)
+	CONSTRAINT fk_empleados_departamento FOREIGN KEY (Departamento) REFERENCES Departamentos(Departamento) ON DELETE CASCADE,
+	CONSTRAINT fk_empleados_puesto FOREIGN KEY (Puesto) REFERENCES Puestos(Nombre) ON DELETE CASCADE
 );
 
 
-INSERT INTO Roles(Id, Descripcion) VALUES 
-(1, 'Administrador'), 
-(2, 'Candidato');
 
-INSERT INTO Usuarios(id,nombre,correo,clave,idRol) VALUES 
-(1, 'Rocio', 'ro@gmail.com', '123', 1), 
-(2, 'Albert', 'ab@gmail.com', '456', 2);
+INSERT INTO empleados (cedula, nombre, departamento_id, puesto_id)
+VALUES (123456789, 'Juan Pérez', 1, 1);
+
+INSERT INTO empleados (cedula, nombre, departamento_id, puesto_id)
+VALUES (987654321, 'María Rodríguez', 2, 2);
+
+SELECT e.Nombre, d.Departamento, e.Puesto
+FROM empleados e
+JOIN departamentos d ON e.departamento = d.departamento
+JOIN puestos p ON e.Nombre = e.puesto
+WHERE e.Cedula = '40214026128';
+

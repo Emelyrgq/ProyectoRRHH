@@ -9,14 +9,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<rrhhContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("rrhh_connection")));
+
+/*builder.Services.AddIdentity<ProyectoRRHHUser, IdentityRole>()
+    .AddEntityFrameworkStores<ProyectoRRHHContext>()
+    .AddDefaultTokenProviders();
+
+/*builder.Services.AddDefaultIdentity<ProyectoRRHHUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ProyectoRRHHContext>();
 //Add Identity
 
-/*builder.Services.AddDefaultIdentity<IdentityUser>(options =>
-    options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<rrhhContext>();
 
-
-// Configurar la autenticación y autorización
+// Configurar la autenticaciï¿½n y autorizaciï¿½n
 
 builder.Services.AddControllersWithViews();
 
@@ -24,7 +27,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.Configure<IdentityOptions>(options =>
 {
     options.Password.RequiredLength = 8;
-    // Ajusta las opciones de contraseña según tus requisitos
+    // Ajusta las opciones de contraseï¿½a segï¿½n tus requisitos
 });
 
 builder.Services.AddAuthentication()
@@ -73,14 +76,13 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.UseAuthentication();
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
 
-
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.UseSession();

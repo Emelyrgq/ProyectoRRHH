@@ -5,11 +5,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h2>Empleados</h2>
+<p>
+    <a asp-action="Create" class="btn btn-success">Agregar</a>
+</p>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Excel">Reportes</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
@@ -44,7 +48,10 @@
                 @Html.DisplayFor(modelItem => item.nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.fechaingreso)
+                    @{
+                        var fechaingreso = ((DateOnly)item.fechaingreso).ToString("dd/MM/yyyy");
+                    }
+                @Html.DisplayFor(modelItem => fechaingreso)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.salariomensual)

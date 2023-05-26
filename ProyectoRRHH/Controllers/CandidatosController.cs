@@ -29,6 +29,23 @@ namespace ProyectoRRHH.Controllers
             return View(await rrhhContext.ToListAsync());
         }
 
+        /*[HttpGet]
+        public async Task<IActionResult> Index(string Candsearch)
+        {
+            ViewData["candidatos"] = Candsearch;
+
+            var candquery = from x in _context.candidatos select x;
+
+            if (!string.IsNullOrEmpty(Candsearch))
+            {
+                candquery = candquery.Where(x => x.cedula.Contains(Candsearch) ||
+                                                 x.competencia.ToString().Contains(Candsearch) ||
+                                                 x.capacitaciones.Any(c => c.descripcion.Contains(Candsearch)));
+            }
+
+            return View(await candquery.AsNoTracking().ToListAsync());
+        }*/
+
         // GET: Candidatos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -68,6 +85,12 @@ namespace ProyectoRRHH.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,cedula,nombre,puestoaspira,departamento,salarioaspira,explaboral,empresa,puestoocupado,fechadesde,fechahasta,salario,recomendadopor")] candidato candidato)
         {
+            var fechadesde = Request.Form["fechadesde"][0];
+            candidato.fechadesde = DateOnly.Parse(fechadesde);
+
+            var fechahasta = Request.Form["fechahasta"][0];
+            candidato.fechahasta = DateOnly.Parse(fechahasta);
+
             if (ModelState.IsValid)
             {
                 var competenciasIds = Request.Form["competencia"].Select(x => int.Parse(x)).ToArray();
