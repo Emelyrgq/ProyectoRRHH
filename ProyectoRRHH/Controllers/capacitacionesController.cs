@@ -58,6 +58,12 @@ namespace ProyectoRRHH.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,candidato_id,descripcion,nivel,fechadesde,fechahasta,institucion")] capacitacione capacitacione)
         {
+            var fechadesde = Request.Form["fechadesde"][0];
+            capacitacione.fechadesde = DateOnly.Parse(fechadesde);
+
+            var fechahasta = Request.Form["fechahasta"][0];
+            capacitacione.fechahasta = DateOnly.Parse(fechahasta);
+
             if (ModelState.IsValid)
             {
                 _context.Add(capacitacione);

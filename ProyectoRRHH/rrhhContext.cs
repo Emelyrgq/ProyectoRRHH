@@ -6,7 +6,7 @@ using ProyectoRRHH.Models;
 
 namespace ProyectoRRHH;
 
-public partial class rrhhContext : IdentityDbContext
+public partial class rrhhContext : DbContext
 {
     public rrhhContext()
     {

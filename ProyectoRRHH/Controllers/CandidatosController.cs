@@ -29,23 +29,31 @@ namespace ProyectoRRHH.Controllers
             return View(await rrhhContext.ToListAsync());
         }
 
-        /*[HttpGet]
+        [HttpGet]
         public async Task<IActionResult> Index(string Candsearch)
         {
             ViewData["candidatos"] = Candsearch;
 
-            var candquery = from x in _context.candidatos select x;
+            var candquery = await _context.candidatos
+                .Include(c => c.competencia)
+                .Include(c => c.idiomas)
+                .Include(c => c.capacitaciones)
+                .Include(c => c.departamentoNavigation)
+                .Include(c => c.puestoaspiraNavigation).ToListAsync();
+
+            var competencias = candquery[0].competencia.ToString();
+            var capacitaciones = candquery[0].capacitaciones.ToString();
 
             if (!string.IsNullOrEmpty(Candsearch))
             {
-                candquery = candquery.Where(x => x.cedula.Contains(Candsearch) ||
-                                                 x.competencia.ToString().Contains(Candsearch) ||
-                                                 x.capacitaciones.Any(c => c.descripcion.Contains(Candsearch)));
+                candquery = candquery.Where(x => (x.cedula.Contains(Candsearch)) ||
+                     x.competencia.Any(c => c.descripcion.ToLower().Trim().Contains(Candsearch.ToLower().Trim())) ||
+                     x.capacitaciones.Any(c => c.descripcion.ToLower().Trim().Contains(Candsearch.ToLower().Trim())))
+                    .ToList();
             }
 
-            return View(await candquery.AsNoTracking().ToListAsync());
-        }*/
-
+            return View(candquery);
+        }
         // GET: Candidatos/Details/5
         public async Task<IActionResult> Details(int? id)
         {

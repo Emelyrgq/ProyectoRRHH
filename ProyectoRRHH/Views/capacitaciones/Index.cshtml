@@ -43,12 +43,18 @@
             <td>
                 @Html.DisplayFor(modelItem => item.nivel)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.fechadesde)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.fechahasta)
-            </td>
+                <td>
+                    @{
+                        var fechadesde = ((DateOnly)item.fechadesde).ToString("dd/MM/yyyy");
+                    }
+                    @Html.DisplayFor(modelItem => fechadesde)
+                </td>
+                <td>
+                    @{
+                        var fechahasta = ((DateOnly)item.fechahasta).ToString("dd/MM/yyyy");
+                    }
+                    @Html.DisplayFor(modelItem => fechahasta)
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.institucion)
             </td>

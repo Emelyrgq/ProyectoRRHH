@@ -2,26 +2,25 @@
 
 <h2>Reporte de empleados</h2>
 <hr />
-<form asp-action="ExportarEmpleadosAExcel" asp-controller="Empleados" method="post">
+<div>
 
     <div class="row align-items-end">
         <div class="col-sm-3">
             <label class="form-label">Fecha Inicio</label>
-            <input class="form-control" name="fechaInicio" type="date" required />
+            <input id="fechaInicio" class="form-control" name="fechaInicio" type="date" required />
         </div>
 
         <div class="col-sm-3">
             <label class="form-label">Fecha Fin</label>
-            <input class="form-control" name="fechaFin" type="date" required />
+            <input id="fechaFinal" class="form-control" name="fechaFin" type="date" required />
         </div>
 
         <div class="col-sm-3">
-            <button class="btn btn-success" type="submit">Reportes</button>
+            <a id="reportButton" class="btn btn-success" asp-action="ExportarEmpleadosAExcel" asp-controller="Empleados">Reportes</a>
         </div>
 
     </div>
-
-</form>
+</div>
 <br />
 <hr />
 
@@ -89,3 +88,47 @@
         }
     </tbody>
 </table>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>$(function(){
+                $("#fechaInicio").change(function(){
+                    var fechaInicio = $("#fechaInicio").val();
+                    var originalUrl = $("#reportButton").attr("href");
+
+                    if (!originalUrl.includes("?")) originalUrl = originalUrl + "?";
+
+                    if (originalUrl.includes("fechaInicio")) {
+                        var firstPosition = originalUrl.search("fechaInicio");
+                        var lastPosition = originalUrl.search("&fechaFinal");
+
+                        if (lastPosition != -1)
+                        {
+                            var fechaFinal = originalUrl.slice(lastPosition);
+                            updatedUrl = originalUrl.slice(0, firstPosition) + "fechaInicio=" + fechaInicio + fechaFinal;
+                        }
+                        else
+                            updatedUrl = originalUrl.slice(0, firstPosition) + "fechaInicio=" + fechaInicio;
+                    }
+                    else
+                        var updatedUrl = originalUrl + "fechaInicio=" + fechaInicio;
+
+                    console.log(updatedUrl);
+                    $("#reportButton").attr("href", updatedUrl);
+                });
+                $("#fechaFinal").change(function () {
+                    var fechaFinal = $("#fechaFinal").val();
+                    var originalUrl = $("#reportButton").attr("href");
+
+                    if (originalUrl.includes("&fechaFinal")) {
+                        var firstPosition = originalUrl.search("fechaFinal");
+                        updatedUrl = originalUrl.slice(0, firstPosition - 1) + "&fechaFinal=" + fechaFinal;
+                    }
+                    else
+                        var updatedUrl = originalUrl + "&fechaFinal=" + fechaFinal;
+
+                    console.log(updatedUrl);
+                    $("#reportButton").attr("href", updatedUrl);
+                });
+    });</script>
+}
