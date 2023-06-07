@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.InkML;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,8 @@ using ProyectoRRHH.Models;
 
 namespace ProyectoRRHH.Controllers
 {
+    [Authorize("RequireAdminRole")]
+
     public class EmpleadosController : Controller
     {
         private readonly rrhhContext _context;

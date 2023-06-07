@@ -26,6 +26,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
 // Configurar la autenticaci�n y autorizaci�n
 
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddRazorPages();
 
 
@@ -48,13 +49,6 @@ builder.Services.AddAuthorization(options =>
 });
 
 
-/*builder.Services.AddSession(options =>
-{
-    options.Cookie.Name = "ProyectoRRHH.Session";
-    options.IdleTimeout = TimeSpan.FromMinutes(1);
-    options.Cookie.IsEssential = true;
-});*/
-
 
 //
 var app = builder.Build();
@@ -69,13 +63,14 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
 app.UseAuthentication();
 
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",

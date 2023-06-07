@@ -51,80 +51,82 @@ namespace ProyectoRRHH.Migrations
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 });
 
-            //migrationBuilder.CreateTable(
-            //    name: "competencias",
-            //    columns: table => new
-            //    {
-            //        id = table.Column<int>(type: "integer", nullable: false)
-            //            .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-            //        descripcion = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-            //        estado = table.Column<bool>(type: "boolean", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("pk_competencia_id", x => x.id);
-            //    });
+            migrationBuilder.InsertData("AspNetRoles",
+               columns: new[] { "Id", "Name", "NormalizedName", "ConcurrencyStamp" },
+               values: new object[,] {
+                       { "1", "Admin", "ADMIN", Guid.NewGuid().ToString() },
+               });
 
-            //migrationBuilder.CreateTable(
-            //    name: "departamentos",
-            //    columns: table => new
-            //    {
-            //        id = table.Column<int>(type: "integer", nullable: false)
-            //            .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-            //        departamento = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("pk_departamento_id", x => x.id);
-            //        table.UniqueConstraint("AK_departamentos_departamento", x => x.departamento);
-            //    });
+            migrationBuilder.CreateTable(
+                name: "competencias",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    descripcion = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    estado = table.Column<bool>(type: "boolean", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_competencia_id", x => x.id);
+                });
 
-            //migrationBuilder.CreateTable(
-            //    name: "idiomas",
-            //    columns: table => new
-            //    {
-            //        id = table.Column<int>(type: "integer", nullable: false)
-            //            .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-            //        nombre = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
-            //        nivel = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("pk_idiomas_id", x => x.id);
-            //    });
+            migrationBuilder.InsertData("competencias",
+               columns: new[] { "id", "descripcion", "estado"},
+               values: new object[,] {
+                       { "1", "Manejo de Recursos Humanos", "true", Guid.NewGuid().ToString() },
+                       { "2", "Uso de Herramientas Ofimaticas", "true", Guid.NewGuid().ToString() },
+                       { "3", "Gestion de Presupuesto", "true", Guid.NewGuid().ToString() },
+                       { "4", "Hablar en publico", "true", Guid.NewGuid().ToString() }
 
-            //migrationBuilder.CreateTable(
-            //    name: "puestos",
-            //    columns: table => new
-            //    {
-            //        id = table.Column<int>(type: "integer", nullable: false)
-            //            .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-            //        nombre = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-            //        nivelriesgo = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true),
-            //        salariomin = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
-            //        salariomax = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
-            //        estado = table.Column<bool>(type: "boolean", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("pk_puesto_id", x => x.id);
-            //        table.UniqueConstraint("AK_puestos_nombre", x => x.nombre);
-            //    });
+        });
 
-            //migrationBuilder.CreateTable(
-            //    name: "usuarios",
-            //    columns: table => new
-            //    {
-            //        id = table.Column<int>(type: "integer", nullable: false)
-            //            .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-            //        email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-            //        emailnormalizado = table.Column<string>(type: "character varying", nullable: true),
-            //        password = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("pk_usuario_id", x => x.id);
-            //    });
+            migrationBuilder.CreateTable(
+                name: "departamentos",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    departamento = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_departamento_id", x => x.id);
+                    table.UniqueConstraint("AK_departamentos_departamento", x => x.departamento);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "idiomas",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    nombre = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    nivel = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_idiomas_id", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "puestos",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    nombre = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    nivelriesgo = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true),
+                    salariomin = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    salariomax = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    estado = table.Column<bool>(type: "boolean", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_puesto_id", x => x.id);
+                    table.UniqueConstraint("AK_puestos_nombre", x => x.nombre);
+                });
+
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
@@ -232,151 +234,151 @@ namespace ProyectoRRHH.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            //migrationBuilder.CreateTable(
-            //    name: "candidatos",
-            //    columns: table => new
-            //    {
-            //        id = table.Column<int>(type: "integer", nullable: false)
-            //            .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-            //        cedula = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
-            //        nombre = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: true),
-            //        puestoaspira = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-            //        departamento = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: true),
-            //        salarioaspira = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true),
-            //        explaboral = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-            //        empresa = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-            //        puestoocupado = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-            //        fechadesde = table.Column<DateOnly>(type: "date", nullable: true),
-            //        fechahasta = table.Column<DateOnly>(type: "date", nullable: true),
-            //        salario = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
-            //        recomendadopor = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("pk_candidatos_id", x => x.id);
-            //        table.UniqueConstraint("AK_candidatos_cedula", x => x.cedula);
-            //        table.ForeignKey(
-            //            name: "fk_candidatos_departamento",
-            //            column: x => x.departamento,
-            //            principalTable: "departamentos",
-            //            principalColumn: "departamento",
-            //            onDelete: ReferentialAction.Cascade);
-            //        table.ForeignKey(
-            //            name: "fk_candidatos_puestoaspira",
-            //            column: x => x.puestoaspira,
-            //            principalTable: "puestos",
-            //            principalColumn: "nombre",
-            //            onDelete: ReferentialAction.Cascade);
-            //    });
+            migrationBuilder.CreateTable(
+                name: "candidatos",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    cedula = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    nombre = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: true),
+                    puestoaspira = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    departamento = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: true),
+                    salarioaspira = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true),
+                    explaboral = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    empresa = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    puestoocupado = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    fechadesde = table.Column<DateOnly>(type: "date", nullable: true),
+                    fechahasta = table.Column<DateOnly>(type: "date", nullable: true),
+                    salario = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    recomendadopor = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_candidatos_id", x => x.id);
+                    table.UniqueConstraint("AK_candidatos_cedula", x => x.cedula);
+                    table.ForeignKey(
+                        name: "fk_candidatos_departamento",
+                        column: x => x.departamento,
+                        principalTable: "departamentos",
+                        principalColumn: "departamento",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_candidatos_puestoaspira",
+                        column: x => x.puestoaspira,
+                        principalTable: "puestos",
+                        principalColumn: "nombre",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
-            //migrationBuilder.CreateTable(
-            //    name: "candidatoscompetencias",
-            //    columns: table => new
-            //    {
-            //        candidatoid = table.Column<int>(type: "integer", nullable: false),
-            //        competenciaid = table.Column<int>(type: "integer", nullable: false)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("pk_candidatos_competencias", x => new { x.candidatoid, x.competenciaid });
-            //        table.ForeignKey(
-            //            name: "fk_candidatos_competencias_candidatoid",
-            //            column: x => x.candidatoid,
-            //            principalTable: "candidatos",
-            //            principalColumn: "id",
-            //            onDelete: ReferentialAction.Cascade);
-            //        table.ForeignKey(
-            //            name: "fk_candidatos_competencias_competenciaid",
-            //            column: x => x.competenciaid,
-            //            principalTable: "competencias",
-            //            principalColumn: "id",
-            //            onDelete: ReferentialAction.Cascade);
-            //    });
+            migrationBuilder.CreateTable(
+                name: "candidatoscompetencias",
+                columns: table => new
+                {
+                    candidatoid = table.Column<int>(type: "integer", nullable: false),
+                    competenciaid = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_candidatos_competencias", x => new { x.candidatoid, x.competenciaid });
+                    table.ForeignKey(
+                        name: "fk_candidatos_competencias_candidatoid",
+                        column: x => x.candidatoid,
+                        principalTable: "candidatos",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_candidatos_competencias_competenciaid",
+                        column: x => x.competenciaid,
+                        principalTable: "competencias",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
-            //migrationBuilder.CreateTable(
-            //    name: "candidatosidiomas",
-            //    columns: table => new
-            //    {
-            //        candidatoid = table.Column<int>(type: "integer", nullable: false),
-            //        idiomasid = table.Column<int>(type: "integer", nullable: false)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("pk_candidatos_idiomas", x => new { x.candidatoid, x.idiomasid });
-            //        table.ForeignKey(
-            //            name: "fk_candidatos_idiomas_candidatoid",
-            //            column: x => x.candidatoid,
-            //            principalTable: "candidatos",
-            //            principalColumn: "id",
-            //            onDelete: ReferentialAction.Cascade);
-            //        table.ForeignKey(
-            //            name: "fk_candidatos_idiomas_idiomasid",
-            //            column: x => x.idiomasid,
-            //            principalTable: "idiomas",
-            //            principalColumn: "id",
-            //            onDelete: ReferentialAction.Cascade);
-            //    });
+            migrationBuilder.CreateTable(
+                name: "candidatosidiomas",
+                columns: table => new
+                {
+                    candidatoid = table.Column<int>(type: "integer", nullable: false),
+                    idiomasid = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_candidatos_idiomas", x => new { x.candidatoid, x.idiomasid });
+                    table.ForeignKey(
+                        name: "fk_candidatos_idiomas_candidatoid",
+                        column: x => x.candidatoid,
+                        principalTable: "candidatos",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_candidatos_idiomas_idiomasid",
+                        column: x => x.idiomasid,
+                        principalTable: "idiomas",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
-            //migrationBuilder.CreateTable(
-            //    name: "capacitaciones",
-            //    columns: table => new
-            //    {
-            //        id = table.Column<int>(type: "integer", nullable: false)
-            //            .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-            //        candidato_id = table.Column<int>(type: "integer", nullable: true),
-            //        descripcion = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-            //        nivel = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
-            //        fechadesde = table.Column<DateOnly>(type: "date", nullable: true),
-            //        fechahasta = table.Column<DateOnly>(type: "date", nullable: true),
-            //        institucion = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("pk_capacitacion_id", x => x.id);
-            //        table.ForeignKey(
-            //            name: "capacitaciones_candidato_id_fkey",
-            //            column: x => x.candidato_id,
-            //            principalTable: "candidatos",
-            //            principalColumn: "id",
-            //            onDelete: ReferentialAction.Cascade);
-            //    });
+            migrationBuilder.CreateTable(
+                name: "capacitaciones",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    candidato_id = table.Column<int>(type: "integer", nullable: true),
+                    descripcion = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    nivel = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    fechadesde = table.Column<DateOnly>(type: "date", nullable: true),
+                    fechahasta = table.Column<DateOnly>(type: "date", nullable: true),
+                    institucion = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_capacitacion_id", x => x.id);
+                    table.ForeignKey(
+                        name: "capacitaciones_candidato_id_fkey",
+                        column: x => x.candidato_id,
+                        principalTable: "candidatos",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
-            //migrationBuilder.CreateTable(
-            //    name: "empleados",
-            //    columns: table => new
-            //    {
-            //        id = table.Column<int>(type: "integer", nullable: false)
-            //            .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-            //        cedula = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: true),
-            //        nombre = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-            //        fechaingreso = table.Column<DateOnly>(type: "date", nullable: true),
-            //        departamento = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-            //        puesto = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-            //        salariomensual = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true),
-            //        estado = table.Column<bool>(type: "boolean", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("pk_empleados_id", x => x.id);
-            //        table.ForeignKey(
-            //            name: "fk_empleados_cedula",
-            //            column: x => x.cedula,
-            //            principalTable: "candidatos",
-            //            principalColumn: "cedula",
-            //            onDelete: ReferentialAction.Cascade);
-            //        table.ForeignKey(
-            //            name: "fk_empleados_departamento",
-            //            column: x => x.departamento,
-            //            principalTable: "departamentos",
-            //            principalColumn: "departamento",
-            //            onDelete: ReferentialAction.Cascade);
-            //        table.ForeignKey(
-            //            name: "fk_empleados_puesto",
-            //            column: x => x.puesto,
-            //            principalTable: "puestos",
-            //            principalColumn: "nombre",
-            //            onDelete: ReferentialAction.Cascade);
-            //    });
+            migrationBuilder.CreateTable(
+                name: "empleados",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    cedula = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: true),
+                    nombre = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    fechaingreso = table.Column<DateOnly>(type: "date", nullable: true),
+                    departamento = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    puesto = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    salariomensual = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true),
+                    estado = table.Column<bool>(type: "boolean", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_empleados_id", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_empleados_cedula",
+                        column: x => x.cedula,
+                        principalTable: "candidatos",
+                        principalColumn: "cedula",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_empleados_departamento",
+                        column: x => x.departamento,
+                        principalTable: "departamentos",
+                        principalColumn: "departamento",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_empleados_puesto",
+                        column: x => x.puesto,
+                        principalTable: "puestos",
+                        principalColumn: "nombre",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -415,76 +417,76 @@ namespace ProyectoRRHH.Migrations
                 column: "NormalizedUserName",
                 unique: true);
 
-            //migrationBuilder.CreateIndex(
-            //    name: "IX_candidatos_departamento",
-            //    table: "candidatos",
-            //    column: "departamento");
+            migrationBuilder.CreateIndex(
+                name: "IX_candidatos_departamento",
+                table: "candidatos",
+                column: "departamento");
 
-            //migrationBuilder.CreateIndex(
-            //    name: "IX_candidatos_puestoaspira",
-            //    table: "candidatos",
-            //    column: "puestoaspira");
+            migrationBuilder.CreateIndex(
+                name: "IX_candidatos_puestoaspira",
+                table: "candidatos",
+                column: "puestoaspira");
 
-            //migrationBuilder.CreateIndex(
-            //    name: "uq_candidatos_cedula",
-            //    table: "candidatos",
-            //    column: "cedula",
-            //    unique: true);
+            migrationBuilder.CreateIndex(
+                name: "uq_candidatos_cedula",
+                table: "candidatos",
+                column: "cedula",
+                unique: true);
 
-            //migrationBuilder.CreateIndex(
-            //    name: "IX_candidatoscompetencias_competenciaid",
-            //    table: "candidatoscompetencias",
-            //    column: "competenciaid");
+            migrationBuilder.CreateIndex(
+                name: "IX_candidatoscompetencias_competenciaid",
+                table: "candidatoscompetencias",
+                column: "competenciaid");
 
-            //migrationBuilder.CreateIndex(
-            //    name: "IX_candidatosidiomas_idiomasid",
-            //    table: "candidatosidiomas",
-            //    column: "idiomasid");
+            migrationBuilder.CreateIndex(
+                name: "IX_candidatosidiomas_idiomasid",
+                table: "candidatosidiomas",
+                column: "idiomasid");
 
-            //migrationBuilder.CreateIndex(
-            //    name: "IX_capacitaciones_candidato_id",
-            //    table: "capacitaciones",
-            //    column: "candidato_id");
+            migrationBuilder.CreateIndex(
+                name: "IX_capacitaciones_candidato_id",
+                table: "capacitaciones",
+                column: "candidato_id");
 
-            //migrationBuilder.CreateIndex(
-            //    name: "uq_competencias_descripcioncompetencia",
-            //    table: "competencias",
-            //    column: "descripcion",
-            //    unique: true);
+            migrationBuilder.CreateIndex(
+                name: "uq_competencias_descripcioncompetencia",
+                table: "competencias",
+                column: "descripcion",
+                unique: true);
 
-            //migrationBuilder.CreateIndex(
-            //    name: "uq_departamentos_departamento",
-            //    table: "departamentos",
-            //    column: "departamento",
-            //    unique: true);
+            migrationBuilder.CreateIndex(
+                name: "uq_departamentos_departamento",
+                table: "departamentos",
+                column: "departamento",
+                unique: true);
 
-            //migrationBuilder.CreateIndex(
-            //    name: "IX_empleados_departamento",
-            //    table: "empleados",
-            //    column: "departamento");
+            migrationBuilder.CreateIndex(
+                name: "IX_empleados_departamento",
+                table: "empleados",
+                column: "departamento");
 
-            //migrationBuilder.CreateIndex(
-            //    name: "IX_empleados_puesto",
-            //    table: "empleados",
-            //    column: "puesto");
+            migrationBuilder.CreateIndex(
+                name: "IX_empleados_puesto",
+                table: "empleados",
+                column: "puesto");
 
-            //migrationBuilder.CreateIndex(
-            //    name: "uq_empleados_cedula",
-            //    table: "empleados",
-            //    column: "cedula",
-            //    unique: true);
+            migrationBuilder.CreateIndex(
+                name: "uq_empleados_cedula",
+                table: "empleados",
+                column: "cedula",
+                unique: true);
 
-            //migrationBuilder.CreateIndex(
-            //    name: "uq_idiomas_nombre",
-            //    table: "idiomas",
-            //    column: "nombre",
-            //    unique: true);
+            migrationBuilder.CreateIndex(
+                name: "uq_idiomas_nombre",
+                table: "idiomas",
+                column: "nombre",
+                unique: true);
 
-            //migrationBuilder.CreateIndex(
-            //    name: "uq_puestos_nombre",
-            //    table: "puestos",
-            //    column: "nombre",
-            //    unique: true);
+            migrationBuilder.CreateIndex(
+                name: "uq_puestos_nombre",
+                table: "puestos",
+                column: "nombre",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -505,20 +507,18 @@ namespace ProyectoRRHH.Migrations
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
 
-            //migrationBuilder.DropTable(
-            //    name: "candidatoscompetencias");
+            migrationBuilder.DropTable(
+                name: "candidatoscompetencias");
 
-            //migrationBuilder.DropTable(
-            //    name: "candidatosidiomas");
+            migrationBuilder.DropTable(
+                name: "candidatosidiomas");
 
-            //migrationBuilder.DropTable(
-            //    name: "capacitaciones");
+            migrationBuilder.DropTable(
+                name: "capacitaciones");
 
-            //migrationBuilder.DropTable(
-            //    name: "empleados");
+            migrationBuilder.DropTable(
+                name: "empleados");
 
-            //migrationBuilder.DropTable(
-            //    name: "usuarios");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -526,20 +526,20 @@ namespace ProyectoRRHH.Migrations
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
-            //migrationBuilder.DropTable(
-            //    name: "competencias");
+            migrationBuilder.DropTable(
+                name: "competencias");
 
-            //migrationBuilder.DropTable(
-            //    name: "idiomas");
+            migrationBuilder.DropTable(
+                name: "idiomas");
 
-            //migrationBuilder.DropTable(
-            //    name: "candidatos");
+            migrationBuilder.DropTable(
+                name: "candidatos");
 
-            //migrationBuilder.DropTable(
-            //    name: "departamentos");
+            migrationBuilder.DropTable(
+                name: "departamentos");
 
-            //migrationBuilder.DropTable(
-            //    name: "puestos");
+            migrationBuilder.DropTable(
+                name: "puestos");
         }
     }
 }

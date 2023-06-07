@@ -41,6 +41,9 @@ namespace ProyectoRRHH.Controllers
                 .Include(c => c.departamentoNavigation)
                 .Include(c => c.puestoaspiraNavigation).ToListAsync();
 
+            if (candquery.Count < 1)
+                return View(candquery);
+
             var competencias = candquery[0].competencia.ToString();
             var capacitaciones = candquery[0].capacitaciones.ToString();
 
