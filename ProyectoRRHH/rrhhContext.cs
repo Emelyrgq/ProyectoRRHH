@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ProyectoRRHH.Models;
 
 namespace ProyectoRRHH;
 
-public partial class rrhhContext : DbContext
+public partial class rrhhContext : IdentityDbContext<IdentityUser>
 {
     public rrhhContext()
     {
@@ -35,6 +36,8 @@ public partial class rrhhContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<candidato>(entity =>
         {
             entity.HasKey(e => e.id).HasName("pk_candidatos_id");
