@@ -74,10 +74,10 @@ namespace ProyectoRRHH.Migrations
             migrationBuilder.InsertData("competencias",
                columns: new[] { "id", "descripcion", "estado"},
                values: new object[,] {
-                       { "1", "Manejo de Recursos Humanos", "true", Guid.NewGuid().ToString() },
-                       { "2", "Uso de Herramientas Ofimaticas", "true", Guid.NewGuid().ToString() },
-                       { "3", "Gestion de Presupuesto", "true", Guid.NewGuid().ToString() },
-                       { "4", "Hablar en publico", "true", Guid.NewGuid().ToString() }
+                       { 1, "Manejo de Recursos Humanos", true },
+                       { 2, "Uso de Herramientas Ofimaticas", true},
+                       { 3, "Gestion de Presupuesto", true },
+                       { 4, "Hablar en publico", true }
 
         });
 

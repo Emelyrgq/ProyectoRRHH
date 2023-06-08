@@ -47,19 +47,30 @@ namespace ProyectoRRHH.Controllers
         }
 
         //Exportar Empleados Excel
-        [HttpPost]
-        public async Task<FileResult> ExportarEmpleadosAExcel([FromQuery] string fechaInicio, [FromQuery] string fechaFin)
+        [HttpGet]
+        public async Task<FileResult> ExportarEmpleadosAExcel([FromQuery] string fechaInicio, [FromQuery] string fechaFinal)
         {
-            var fechaInicioDate = DateOnly.Parse(fechaInicio);
-            var fechaFinDate = DateOnly.Parse(fechaFin);
+           /* var fechaInicioDate = DateOnly.Parse(fechaInicio);
+            var fechaFinDate = DateOnly.Parse(fechaFinal);*/
+            DateOnly? fechaInicioDate = null;
+            DateOnly? fechaFinDate = null;
 
+            if (!string.IsNullOrEmpty(fechaInicio))
+            {
+                fechaInicioDate = DateOnly.Parse(fechaInicio);
+            }
+
+            if (!string.IsNullOrEmpty(fechaFinal))
+            {
+                fechaFinDate = DateOnly.Parse(fechaFinal);
+            }
             /*var tst = Request;
             var test = Request.Form["fechaInicio"];
             var fechaInicioDate = DateOnly.Parse(Request.Form["fechaInicio"][0]);
             var fechaFinDate = DateOnly.Parse(Request.Form["fechaFin"][0]);*/
 
             var empleados = await _context.empleados
-                .Where(e => e.fechaingreso >= fechaInicioDate &&  e.fechaingreso <= fechaFinDate)
+                .Where(e => e.fechaingreso >= fechaInicioDate && e.fechaingreso <= fechaFinDate)
                 .ToListAsync();
 
             var nombreArchivo = $"Empleados.xlsx";
@@ -110,8 +121,8 @@ namespace ProyectoRRHH.Controllers
             }
 
         }
-            // GET: Empleados/Details/5
-            public async Task<IActionResult> Details(int? id)
+        // GET: Empleados/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.empleados == null)
             {
