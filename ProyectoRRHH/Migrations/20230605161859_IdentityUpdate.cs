@@ -64,7 +64,7 @@ namespace ProyectoRRHH.Migrations
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     descripcion = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    estado = table.Column<bool>(type: "boolean", nullable: true)
+                    estado = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -74,10 +74,10 @@ namespace ProyectoRRHH.Migrations
             migrationBuilder.InsertData("competencias",
                columns: new[] { "id", "descripcion", "estado"},
                values: new object[,] {
-                       { 1, "Manejo de Recursos Humanos", true },
-                       { 2, "Uso de Herramientas Ofimaticas", true},
-                       { 3, "Gestion de Presupuesto", true },
-                       { 4, "Hablar en publico", true }
+                       { 1, "Manejo de Recursos Humanos", "Activo" },
+                       { 2, "Uso de Herramientas Ofimaticas", "Activo"},
+                       { 3, "Gestion de Presupuesto", "Activo" },
+                       { 4, "Hablar en publico", "Activo" }
 
         });
 
@@ -119,7 +119,7 @@ namespace ProyectoRRHH.Migrations
                     nivelriesgo = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true),
                     salariomin = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
                     salariomax = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
-                    estado = table.Column<bool>(type: "boolean", nullable: true)
+                    estado = table.Column<string>(type: "character varying(100)", maxLength: 10, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -355,7 +355,7 @@ namespace ProyectoRRHH.Migrations
                     departamento = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     puesto = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     salariomensual = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true),
-                    estado = table.Column<bool>(type: "boolean", nullable: true)
+                    estado = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true)
                 },
                 constraints: table =>
                 {

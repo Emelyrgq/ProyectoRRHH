@@ -19,7 +19,7 @@ public partial class empleado
 
     public string salariomensual { get; set; }
 
-    public bool? estado { get; set; }
+    public string estado { get; set; }
 
     public virtual candidato cedulaNavigation { get; set; }
 

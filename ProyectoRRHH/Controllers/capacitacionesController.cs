@@ -19,6 +19,7 @@ namespace ProyectoRRHH.Controllers
         {
             _context = context;
         }
+        [Authorize("RequireAdminRole")]
 
         // GET: Capacitaciones
         public async Task<IActionResult> Index()

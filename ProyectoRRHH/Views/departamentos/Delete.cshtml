@@ -6,12 +6,13 @@
 }
 
 <h1>¿Eliminar Departamento?</h1>
-
-<h3>Si eliminas este departamento se elimininara de forma permanente.</h3>
+<div class="alert alert-danger" role="alert">
+    Si eliminas este departamento, se elimininará de forma permanente.
+</div>
 <div>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-2" >
             <a>Departamento</a>
         </dt>
         <dd class = "col-sm-10">
@@ -22,6 +23,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index" class="btn btn-info">Volver</a>
+        <a asp-action="Index" class="btn btn-primary">Volver</a>
     </form>
 </div>

@@ -208,6 +208,9 @@ namespace ProyectoRRHH.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,cedula,nombre,fechaingreso,departamento,puesto,salariomensual,estado")] empleado empleado)
         {
+            var fechaingreso = Request.Form["fechaingreso"][0];
+            empleado.fechaingreso = DateOnly.Parse(fechaingreso);
+
             if (id != empleado.id)
             {
                 return NotFound();

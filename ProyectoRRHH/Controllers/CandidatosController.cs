@@ -19,6 +19,7 @@ namespace ProyectoRRHH.Controllers
         {
             _context = context;
         }
+        [Authorize("RequireAdminRole")]
 
         // GET: Candidatos
         public async Task<IActionResult> Index()
@@ -30,6 +31,7 @@ namespace ProyectoRRHH.Controllers
                 .Include(c => c.puestoaspiraNavigation);
             return View(await rrhhContext.ToListAsync());
         }
+        [Authorize("RequireAdminRole")]
 
         [HttpGet]
         public async Task<IActionResult> Index(string Candsearch)
@@ -183,6 +185,7 @@ namespace ProyectoRRHH.Controllers
             ViewData["puestoaspira"] = new SelectList(_context.puestos, "nombre", "nombre", candidato.puestoaspira);
             return View(candidato);
         }
+        [Authorize("RequireAdminRole")]
 
         // GET: Candidatos/Delete/5
         public async Task<IActionResult> Delete(int? id)

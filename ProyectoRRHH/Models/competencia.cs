@@ -9,7 +9,7 @@ public partial class competencia
 
     public string descripcion { get; set; }
 
-    public bool? estado { get; set; }
+    public string estado { get; set; }
 
     public virtual ICollection<candidato> candidatos { get; set; } = new List<candidato>();
 }
