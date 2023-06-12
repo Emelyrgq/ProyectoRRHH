@@ -26,6 +26,13 @@ namespace ProyectoRRHH.Migrations
                     table.PrimaryKey("PK_AspNetRoles", x => x.Id);
                 });
 
+            migrationBuilder.InsertData("AspNetRoles",
+            columns: new[] { "Id", "Name", "NormalizedName", "ConcurrencyStamp" },
+            values: new object[,] {
+                       { "1", "Admin", "ADMIN", Guid.NewGuid().ToString() },
+            });
+
+
             migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
@@ -51,12 +58,6 @@ namespace ProyectoRRHH.Migrations
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 });
 
-            migrationBuilder.InsertData("AspNetRoles",
-               columns: new[] { "Id", "Name", "NormalizedName", "ConcurrencyStamp" },
-               values: new object[,] {
-                       { "1", "Admin", "ADMIN", Guid.NewGuid().ToString() },
-               });
-
             migrationBuilder.CreateTable(
                 name: "competencias",
                 columns: table => new
@@ -70,16 +71,6 @@ namespace ProyectoRRHH.Migrations
                 {
                     table.PrimaryKey("pk_competencia_id", x => x.id);
                 });
-
-            migrationBuilder.InsertData("competencias",
-               columns: new[] { "id", "descripcion", "estado"},
-               values: new object[,] {
-                       { 1, "Manejo de Recursos Humanos", "Activo" },
-                       { 2, "Uso de Herramientas Ofimaticas", "Activo"},
-                       { 3, "Gestion de Presupuesto", "Activo" },
-                       { 4, "Hablar en publico", "Activo" }
-
-        });
 
             migrationBuilder.CreateTable(
                 name: "departamentos",
@@ -248,8 +239,8 @@ namespace ProyectoRRHH.Migrations
                     explaboral = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     empresa = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     puestoocupado = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    fechadesde = table.Column<DateOnly>(type: "date", nullable: true),
-                    fechahasta = table.Column<DateOnly>(type: "date", nullable: true),
+                    fechadesde = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    fechahasta = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     salario = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
                     recomendadopor = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: true)
                 },
@@ -328,8 +319,8 @@ namespace ProyectoRRHH.Migrations
                     candidato_id = table.Column<int>(type: "integer", nullable: true),
                     descripcion = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     nivel = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
-                    fechadesde = table.Column<DateOnly>(type: "date", nullable: true),
-                    fechahasta = table.Column<DateOnly>(type: "date", nullable: true),
+                    fechadesde = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    fechahasta = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     institucion = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
@@ -351,7 +342,7 @@ namespace ProyectoRRHH.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     cedula = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: true),
                     nombre = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-                    fechaingreso = table.Column<DateOnly>(type: "date", nullable: true),
+                    fechaingreso = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     departamento = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     puesto = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     salariomensual = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true),

@@ -165,12 +165,10 @@ namespace ProyectoRRHH.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("text");
@@ -207,12 +205,10 @@ namespace ProyectoRRHH.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
@@ -247,10 +243,10 @@ namespace ProyectoRRHH.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<DateOnly?>("fechadesde")
+                    b.Property<DateTime?>("fechadesde")
                         .HasColumnType("date");
 
-                    b.Property<DateOnly?>("fechahasta")
+                    b.Property<DateTime?>("fechahasta")
                         .HasColumnType("date");
 
                     b.Property<string>("nombre")
@@ -305,10 +301,10 @@ namespace ProyectoRRHH.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<DateOnly?>("fechadesde")
+                    b.Property<DateTime?>("fechadesde")
                         .HasColumnType("date");
 
-                    b.Property<DateOnly?>("fechahasta")
+                    b.Property<DateTime?>("fechahasta")
                         .HasColumnType("date");
 
                     b.Property<string>("institucion")
@@ -339,8 +335,8 @@ namespace ProyectoRRHH.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<bool?>("estado")
-                        .HasColumnType("boolean");
+                    b.Property<string>("estado")
+                        .HasColumnType("text");
 
                     b.HasKey("id")
                         .HasName("pk_competencia_id");
@@ -383,28 +379,35 @@ namespace ProyectoRRHH.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
 
                     b.Property<string>("cedula")
+                        .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)");
 
                     b.Property<string>("departamento")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<bool?>("estado")
-                        .HasColumnType("boolean");
+                    b.Property<string>("estado")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateOnly?>("fechaingreso")
+                        .IsRequired()
                         .HasColumnType("date");
 
                     b.Property<string>("nombre")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
                     b.Property<string>("puesto")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
                     b.Property<string>("salariomensual")
+                        .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)");
 
@@ -454,8 +457,8 @@ namespace ProyectoRRHH.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
 
-                    b.Property<bool?>("estado")
-                        .HasColumnType("boolean");
+                    b.Property<string>("estado")
+                        .HasColumnType("text");
 
                     b.Property<string>("nivelriesgo")
                         .HasMaxLength(10)
@@ -630,6 +633,7 @@ namespace ProyectoRRHH.Migrations
                         .HasForeignKey("ProyectoRRHH.Models.empleado", "cedula")
                         .HasPrincipalKey("ProyectoRRHH.Models.candidato", "cedula")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("fk_empleados_cedula");
 
                     b.HasOne("ProyectoRRHH.Models.departamento", "departamentoNavigation")
@@ -637,6 +641,7 @@ namespace ProyectoRRHH.Migrations
                         .HasForeignKey("departamento")
                         .HasPrincipalKey("departamento1")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("fk_empleados_departamento");
 
                     b.HasOne("ProyectoRRHH.Models.puesto", "puestoNavigation")
@@ -644,6 +649,7 @@ namespace ProyectoRRHH.Migrations
                         .HasForeignKey("puesto")
                         .HasPrincipalKey("nombre")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("fk_empleados_puesto");
 
                     b.Navigation("cedulaNavigation");

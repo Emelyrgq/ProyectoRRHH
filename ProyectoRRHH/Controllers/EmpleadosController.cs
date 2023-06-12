@@ -176,6 +176,11 @@ namespace ProyectoRRHH.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            if (!ModelState.IsValid)
+            {
+                return View(empleado);
+            }
+
             ViewData["cedula"] = new SelectList(_context.candidatos, "cedula", "cedula", empleado.cedula);
             ViewData["departamento"] = new SelectList(_context.departamentos, "departamento1", "departamento1", empleado.departamento);
             ViewData["puesto"] = new SelectList(_context.puestos, "nombre", "nombre", empleado.puesto);
