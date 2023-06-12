@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<IdentityUser> signInManager;
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -25,36 +28,57 @@
                         <!--<li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>-->
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Competencias" asp-action="Index">Competencias</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Departamentos" asp-action="Index">Departamento</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Idiomas" asp-action="Index">Idiomas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Puestos" asp-action="Index">Puestos</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Empleados
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Empleados" asp-action="Index">Empleados</a></li>
-                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Empleados" asp-action="Excel">Reporte</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Candidatos" asp-action="Index">Candidato</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Capacitaciones" asp-action="Index">Capacitaciones</a>
-                        </li>
-                        <!--<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Registro">Login</a>
-                        </li>-->
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Competencias" asp-action="Index">Competencias</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Departamentos" asp-action="Index">Departamentos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Idiomas" asp-action="Index">Idiomas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Puestos" asp-action="Index">Puestos</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Empleados
+                                </a>
+                                <ul class="dropdown-menu text-black" aria-labelledby="navbarDropdown">
+                                    <li><a class="nav-link text-dark" asp-area="" asp-controller="Empleados" asp-action="Index">Listado</a></li>
+                                    <li><a class="nav-link text-dark" asp-area="" asp-controller="Empleados" asp-action="Excel">Reporte</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Candidatos" asp-action="Index">Candidatos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Capacitaciones" asp-action="Index">Capacitaciones</a>
+                            </li>
+                        }
+                        
+                        @if (signInManager.IsSignedIn(User) && !User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Candidatos
+                                </a>
+                                <ul class="dropdown-menu text-black" aria-labelledby="navbarDropdown">
+                                    <li><a class="nav-link text-dark" asp-area="" asp-controller="Candidatos" asp-action="Create">Crear</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Capacitaciones
+                                </a>
+                                <ul class="dropdown-menu text-black" aria-labelledby="navbarDropdown">
+                                    <li><a class="nav-link text-dark" asp-area="" asp-controller="Capacitaciones" asp-action="Create">Crear</a></li>
+                                </ul>
+                            </li>
+                            
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
