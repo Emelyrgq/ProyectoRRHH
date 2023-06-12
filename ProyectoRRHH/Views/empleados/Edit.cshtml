@@ -5,9 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+<h1>Editar</h1>
 
-<h4>empleado</h4>
+<h4>Empleado</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -15,51 +15,71 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="id" />
             <div class="form-group">
-                <label asp-for="cedula" class="control-label"></label>
-                <select asp-for="cedula" class="form-control" asp-items="ViewBag.cedula"></select>
-                <span asp-validation-for="cedula" class="text-danger"></span>
+                <label class="control-label">Cédula</label>
+                <select id="cedulaDropDownList" asp-for="id" class="form-control" asp-items="ViewBag.cedula"></select>
             </div>
+
             <div class="form-group">
-                <label asp-for="nombre" class="control-label"></label>
+                <label class="control-label">Nombre</label>
                 <input asp-for="nombre" class="form-control" />
                 <span asp-validation-for="nombre" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="fechaingreso" class="control-label"></label>
-                <input asp-for="fechaingreso" class="form-control" />
+                <label class="control-label">Fecha de ingreso</label>
+                <input asp-for="fechaingreso" class="form-control" type="date" onblur="validateDate(this)" />
                 <span asp-validation-for="fechaingreso" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="departamento" class="control-label"></label>
+                <label class="control-label">Departamento</label>
                 <select asp-for="departamento" class="form-control" asp-items="ViewBag.departamento"></select>
-                <span asp-validation-for="departamento" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="puesto" class="control-label"></label>
+                <label class="control-label">Puesto</label>
                 <select asp-for="puesto" class="form-control" asp-items="ViewBag.puesto"></select>
-                <span asp-validation-for="puesto" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="salariomensual" class="control-label"></label>
+                <label class="control-label">Salario mensual</label>
                 <input asp-for="salariomensual" class="form-control" />
                 <span asp-validation-for="salariomensual" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="estado" class="control-label"></label>
-                <input asp-for="estado" class="form-control" />
+                <label class="control-label">Estado</label>
+                <select asp-for="estado" class="form-control">
+                    <option value="">-Selecciona-</option>
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                </select>
                 <span asp-validation-for="estado" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Crear" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-primary">Volver</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPArtial");
+    }
+    <script>
+        $("#cedulaDropDownList").select2({
+            theme: "bootstrap"
+        })
+    </script>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function validateDate(input) {
+            var dateValue = input.value;
+            if (dateValue !== "") {
+                var date = new Date(dateValue);
+                if (isNaN(date.getTime())) {
+                    input.value = "";
+                    alert("Fecha inválida. Por favor, ingrese una fecha válida.");
+                }
+            }
+        }
+    </script>
 }

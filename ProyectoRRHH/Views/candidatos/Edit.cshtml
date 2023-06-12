@@ -5,98 +5,106 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+<h1>Editar</h1>
 
 <h4>candidato</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+    <div class="col-md-12">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="id" />
-            <div class="form-group">
-                <label asp-for="cedula" class="control-label"></label>
-                <input asp-for="cedula" class="form-control" />
-                <span asp-validation-for="cedula" class="text-danger"></span>
+           <div class="row">
+               <div class="col-md-2"></div>
+                <div class="col-md-4">
+                    <fieldset>
+                        <legend>General:</legend>
+                        <div class="form-group mb-2">
+                            <label class="control-label">Cédula</label>
+                            <input asp-for="cedula" class="form-control" />
+                            <span asp-validation-for="cedula" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label class="control-label">Nombre</label>
+                            <input asp-for="nombre" class="form-control" />
+                            <span asp-validation-for="nombre" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label class="control-label">Puesto aspiracional</label>
+                            <select asp-for="puestoaspira" class="form-control" asp-items="ViewBag.puestoaspira"></select>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label class="control-label">Departamento</label>
+                            <select asp-for="departamento" class="form-control" asp-items="ViewBag.departamento"></select>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label class="control-label">Competencias</label>
+                            <select multiple asp-for="competencia" class="form-control" asp-items="ViewBag.competencias"></select>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label class="control-label">Idiomas</label>
+                            <select multiple asp-for="idiomas" class="form-control" asp-items="ViewBag.idiomas"></select>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label class="control-label">Salario aspiracional</label>
+                            <input asp-for="salarioaspira" class="form-control" />
+                            <span asp-validation-for="salarioaspira" class="text-danger"></span>
+                        </div>
+
+                    </fieldset>
+                    </div>
+                    <div class="col-md-4">
+                        <fieldset class="mb-4">
+                            <legend>Experiencia Laboral:</legend>
+                            <div class="form-group mb-2">
+                            <label class="control-label">Experiencia Laboral</label>
+                            <select asp-for="explaboral" class="form-control">
+                                <option value="">-Selecciona-</option>
+                                <option value="Si">Si</option>
+                                <option value="No">No</option>
+                            </select>
+                                <span asp-validation-for="explaboral" class="text-danger"></span>
+                            </div>
+                        <div class="form-group mb-2">
+                            <label class="control-label">Empresa</label>
+                            <input asp-for="empresa" class="form-control" />
+                            <span asp-validation-for="empresa" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label class="control-label">Puesto ocupado</label>
+                            <input asp-for="puestoocupado" class="form-control" />
+                            <span asp-validation-for="puestoocupado" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label class="control-label">Fecha Desde</label>
+                            <input asp-for="fechadesde" class="form-control" type="date" />
+                            <span asp-validation-for="fechadesde" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label class="control-label">Fech Hasta</label>
+                            <input asp-for="fechahasta" class="form-control" type="date"  />
+                            <span asp-validation-for="fechahasta" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label class="control-label">Salario</label>
+                            <input asp-for="salario" class="form-control" />
+                            <span asp-validation-for="salario" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label class="control-label">Recomendado por:</label>
+                            <input asp-for="recomendadopor" class="form-control" />
+                            <span asp-validation-for="recomendadopor" class="text-danger"></span>
+                        </div>
+                        </fieldset>
+                    <div class="form-group d-flex flex-column">
+                        <input type="submit" value="Editar" class="btn btn-warning" />
+                        <a asp-action="Index" class="btn btn-primary">Volver</a>
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
             </div>
-            <div class="form-group">
-                <label asp-for="nombre" class="control-label"></label>
-                <input asp-for="nombre" class="form-control" />
-                <span asp-validation-for="nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="puestoaspira" class="control-label"></label>
-                <select asp-for="puestoaspira" class="form-control" asp-items="ViewBag.puestoaspira"></select>
-                <span asp-validation-for="puestoaspira" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="departamento" class="control-label"></label>
-                <select asp-for="departamento" class="form-control" asp-items="ViewBag.departamento"></select>
-                <span asp-validation-for="departamento" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="salarioaspira" class="control-label"></label>
-                <input asp-for="salarioaspira" class="form-control" />
-                <span asp-validation-for="salarioaspira" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="competencia" class="control-label"></label>
-                <select multiple asp-for="competencia" class="form-control" asp-items="ViewBag.competencias"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="capacitaciones" class="control-label"></label>
-                <select multiple asp-for="capacitaciones" class="form-control" asp-items="ViewBag.capacitaciones"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="idiomas" class="control-label"></label>
-                <select multiple asp-for="idiomas" class="form-control" asp-items="ViewBag.idiomas"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="explaboral" class="control-label"></label>
-                <input asp-for="explaboral" class="form-control" />
-                <span asp-validation-for="explaboral" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="empresa" class="control-label"></label>
-                <input asp-for="empresa" class="form-control" />
-                <span asp-validation-for="empresa" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="puestoocupado" class="control-label"></label>
-                <input asp-for="puestoocupado" class="form-control" />
-                <span asp-validation-for="puestoocupado" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="fechadesde" class="control-label"></label>
-                <input asp-for="fechadesde" class="form-control" />
-                <span asp-validation-for="fechadesde" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="fechahasta" class="control-label"></label>
-                <input asp-for="fechahasta" class="form-control" />
-                <span asp-validation-for="fechahasta" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="salario" class="control-label"></label>
-                <input asp-for="salario" class="form-control" />
-                <span asp-validation-for="salario" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="recomendadopor" class="control-label"></label>
-                <input asp-for="recomendadopor" class="form-control" />
-                <span asp-validation-for="recomendadopor" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
+            <hr />
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

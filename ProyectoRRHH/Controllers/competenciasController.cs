@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,22 +10,25 @@ using ProyectoRRHH.Models;
 
 namespace ProyectoRRHH.Controllers
 {
-    public class competenciasController : Controller
+    [Authorize("RequireAdminRole")]
+    public class CompetenciasController : Controller
     {
         private readonly rrhhContext _context;
 
-        public competenciasController(rrhhContext context)
+        public CompetenciasController(rrhhContext context)
         {
             _context = context;
         }
 
-        // GET: competencias
+        // GET: Competencias
+        [Authorize("RequireAdminRole")]
+
         public async Task<IActionResult> Index()
         {
               return View(await _context.competencias.ToListAsync());
         }
 
-        // GET: competencias/Details/5
+        // GET: Competencias/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.competencias == null)
@@ -42,13 +46,13 @@ namespace ProyectoRRHH.Controllers
             return View(competencia);
         }
 
-        // GET: competencias/Create
+        // GET: Competencias/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: competencias/Create
+        // POST: Competencias/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -64,7 +68,7 @@ namespace ProyectoRRHH.Controllers
             return View(competencia);
         }
 
-        // GET: competencias/Edit/5
+        // GET: Competencias/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.competencias == null)
@@ -80,7 +84,7 @@ namespace ProyectoRRHH.Controllers
             return View(competencia);
         }
 
-        // POST: competencias/Edit/5
+        // POST: Competencias/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -115,7 +119,7 @@ namespace ProyectoRRHH.Controllers
             return View(competencia);
         }
 
-        // GET: competencias/Delete/5
+        // GET: Competencias/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.competencias == null)
@@ -133,7 +137,7 @@ namespace ProyectoRRHH.Controllers
             return View(competencia);
         }
 
-        // POST: competencias/Delete/5
+        // POST: Competencias/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

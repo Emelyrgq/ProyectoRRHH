@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using ProyectoRRHH.Models;
 
 namespace ProyectoRRHH.Controllers
 {
+    [Authorize("RequireAdminRole")]
     public class DepartamentosController : Controller
     {
         private readonly rrhhContext _context;
@@ -18,13 +20,13 @@ namespace ProyectoRRHH.Controllers
             _context = context;
         }
 
-        // GET: Departamentos
+        // GET: departamentoes
         public async Task<IActionResult> Index()
         {
               return View(await _context.departamentos.ToListAsync());
         }
 
-        // GET: Departamentos/Details/5
+        // GET: departamentoes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.departamentos == null)
@@ -42,13 +44,13 @@ namespace ProyectoRRHH.Controllers
             return View(departamento);
         }
 
-        // GET: Departamentos/Create
+        // GET: departamentoes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Departamentos/Create
+        // POST: departamentoes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -64,7 +66,7 @@ namespace ProyectoRRHH.Controllers
             return View(departamento);
         }
 
-        // GET: Departamentos/Edit/5
+        // GET: departamentoes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.departamentos == null)
@@ -80,7 +82,7 @@ namespace ProyectoRRHH.Controllers
             return View(departamento);
         }
 
-        // POST: Departamentos/Edit/5
+        // POST: departamentoes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -115,7 +117,7 @@ namespace ProyectoRRHH.Controllers
             return View(departamento);
         }
 
-        // GET: Departamentos/Delete/5
+        // GET: departamentoes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.departamentos == null)
@@ -133,7 +135,7 @@ namespace ProyectoRRHH.Controllers
             return View(departamento);
         }
 
-        // POST: Departamentos/Delete/5
+        // POST: departamentoes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

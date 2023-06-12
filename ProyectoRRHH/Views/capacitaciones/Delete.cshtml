@@ -5,48 +5,60 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Delete</h1>
-
-<h3>Are you sure you want to delete this?</h3>
+<h1>Eliminar</h1>
+<div class="alert alert-danger" role="alert">
+    Si eliminas esta capacitación, se elimininará de forma permanente.
+</div>
 <div>
-    <h4>capacitacione</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.descripcion)
+            Descripción
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.descripcion)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.nivel)
+            Nivel
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.nivel)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.fechadesde)
+            Fecha Desde
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.fechadesde)
+            @{
+                var fechadesde = ((DateOnly)Model.fechadesde).ToString("dd/MM/yyyy");
+            }
+            @fechadesde
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.fechahasta)
+            Fecha Hasta
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.fechahasta)
+            @{
+                var fechahasta = ((DateOnly)Model.fechahasta).ToString("dd/MM/yyyy");
+            }
+            @fechahasta
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.institucion)
+            Institución
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.institucion)
+        </dd>
+        <dt class = "col-sm-2">
+        Candidato
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.candidato.cedula)
         </dd>
     </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-primary">Volver</a>
     </form>
 </div>

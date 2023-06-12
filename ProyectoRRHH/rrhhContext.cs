@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using ProyectoRRHH.Models;
 
-namespace ProyectoRRHH.Models;
+namespace ProyectoRRHH;
 
-public partial class rrhhContext : DbContext
+public partial class rrhhContext : IdentityDbContext<IdentityUser>
 {
     public rrhhContext()
     {
@@ -29,13 +32,12 @@ public partial class rrhhContext : DbContext
 
     public virtual DbSet<puesto> puestos { get; set; }
 
-    public virtual DbSet<role> roles { get; set; }
-
     public virtual DbSet<usuario> usuarios { get; set; }
-
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<candidato>(entity =>
         {
             entity.HasKey(e => e.id).HasName("pk_candidatos_id");
@@ -58,44 +60,23 @@ public partial class rrhhContext : DbContext
             entity.HasOne(d => d.departamentoNavigation).WithMany(p => p.candidatos)
                 .HasPrincipalKey(p => p.departamento1)
                 .HasForeignKey(d => d.departamento)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("fk_candidatos_departamento");
 
             entity.HasOne(d => d.puestoaspiraNavigation).WithMany(p => p.candidatos)
                 .HasPrincipalKey(p => p.nombre)
                 .HasForeignKey(d => d.puestoaspira)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("fk_candidatos_puestoaspira");
-
-            entity.HasMany(d => d.capacitaciones).WithMany(p => p.candidatos)
-                .UsingEntity<Dictionary<string, object>>(
-                    "candidatoscapacitacione",
-                    r => r.HasOne<capacitacione>().WithMany()
-                        .HasForeignKey("capacitacionesid")
-                        /*.OnDelete(DeleteBehavior.ClientSetNull)*/
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .HasConstraintName("fk_candidatos_capacitaciones_competenciaid"),
-                    l => l.HasOne<candidato>().WithMany()
-                        .HasForeignKey("candidatoid")
-                        /*.OnDelete(DeleteBehavior.ClientSetNull)*/
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .HasConstraintName("fk_candidatos_capacitaciones_candidatoid"),
-                    j =>
-                    {
-                        j.HasKey("candidatoid", "capacitacionesid").HasName("pk_candidatos_capacitaciones");
-                        j.ToTable("candidatoscapacitaciones");
-                    });
 
             entity.HasMany(d => d.competencia).WithMany(p => p.candidatos)
                 .UsingEntity<Dictionary<string, object>>(
                     "candidatoscompetencia",
                     r => r.HasOne<competencia>().WithMany()
                         .HasForeignKey("competenciaid")
-                        /*.OnDelete(DeleteBehavior.ClientSetNull)*/
-                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("fk_candidatos_competencias_competenciaid"),
                     l => l.HasOne<candidato>().WithMany()
                         .HasForeignKey("candidatoid")
-                        /*.OnDelete(DeleteBehavior.ClientSetNull)*/
-                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("fk_candidatos_competencias_candidatoid"),
                     j =>
                     {
@@ -108,13 +89,9 @@ public partial class rrhhContext : DbContext
                     "candidatosidioma",
                     r => r.HasOne<idioma>().WithMany()
                         .HasForeignKey("idiomasid")
-                        /*.OnDelete(DeleteBehavior.ClientSetNull)*/
-                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("fk_candidatos_idiomas_idiomasid"),
                     l => l.HasOne<candidato>().WithMany()
                         .HasForeignKey("candidatoid")
-                        /*.OnDelete(DeleteBehavior.ClientSetNull)*/
-                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("fk_candidatos_idiomas_candidatoid"),
                     j =>
                     {
@@ -127,11 +104,14 @@ public partial class rrhhContext : DbContext
         {
             entity.HasKey(e => e.id).HasName("pk_capacitacion_id");
 
-            entity.HasIndex(e => e.descripcion, "uq_capacitaciones_descripcioncapacitacion").IsUnique();
-
             entity.Property(e => e.descripcion).HasMaxLength(100);
             entity.Property(e => e.institucion).HasMaxLength(50);
             entity.Property(e => e.nivel).HasMaxLength(20);
+
+            entity.HasOne(d => d.candidato).WithMany(p => p.capacitaciones)
+                .HasForeignKey(d => d.candidato_id)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("capacitaciones_candidato_id_fkey");
         });
 
         modelBuilder.Entity<competencia>(entity =>
@@ -141,7 +121,6 @@ public partial class rrhhContext : DbContext
             entity.HasIndex(e => e.descripcion, "uq_competencias_descripcioncompetencia").IsUnique();
 
             entity.Property(e => e.descripcion).HasMaxLength(100);
-
         });
 
         modelBuilder.Entity<departamento>(entity =>
@@ -171,16 +150,19 @@ public partial class rrhhContext : DbContext
             entity.HasOne(d => d.cedulaNavigation).WithOne(p => p.empleado)
                 .HasPrincipalKey<candidato>(p => p.cedula)
                 .HasForeignKey<empleado>(d => d.cedula)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("fk_empleados_cedula");
 
             entity.HasOne(d => d.departamentoNavigation).WithMany(p => p.empleados)
                 .HasPrincipalKey(p => p.departamento1)
                 .HasForeignKey(d => d.departamento)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("fk_empleados_departamento");
 
             entity.HasOne(d => d.puestoNavigation).WithMany(p => p.empleados)
                 .HasPrincipalKey(p => p.nombre)
                 .HasForeignKey(d => d.puesto)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("fk_empleados_puesto");
         });
 
@@ -208,24 +190,13 @@ public partial class rrhhContext : DbContext
             entity.Property(e => e.salariomin).HasMaxLength(20);
         });
 
-        modelBuilder.Entity<role>(entity =>
-        {
-            entity.HasKey(e => e.id).HasName("pk_rol_id");
-
-            entity.Property(e => e.descripcion).HasMaxLength(50);
-        });
-
         modelBuilder.Entity<usuario>(entity =>
         {
-            entity.HasKey(e => e.id).HasName("pk_usuarios_id");
+            entity.HasKey(e => e.id).HasName("pk_usuario_id");
 
-            entity.Property(e => e.clave).HasMaxLength(50);
-            entity.Property(e => e.correo).HasMaxLength(50);
-            entity.Property(e => e.nombre).HasMaxLength(50);
-
-            entity.HasOne(d => d.idrolNavigation).WithMany(p => p.usuarios)
-                .HasForeignKey(d => d.idrol)
-                .HasConstraintName("fk_usuarios_idrol");
+            entity.Property(e => e.email).HasMaxLength(100);
+            entity.Property(e => e.emailnormalizado).HasColumnType("character varying");
+            entity.Property(e => e.password).HasMaxLength(100);
         });
 
         OnModelCreatingPartial(modelBuilder);

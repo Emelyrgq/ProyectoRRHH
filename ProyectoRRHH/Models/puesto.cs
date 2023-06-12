@@ -15,7 +15,7 @@ public partial class puesto
 
     public string salariomax { get; set; }
 
-    public bool? estado { get; set; }
+    public string estado { get; set; }
 
     public virtual ICollection<candidato> candidatos { get; set; } = new List<candidato>();
 

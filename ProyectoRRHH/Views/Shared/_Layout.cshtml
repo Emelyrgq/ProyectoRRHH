@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="~/lib/select2/css/select2-bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/ProyectoRRHH.styles.css" asp-append-version="true" />
 </head>
 <body>
@@ -25,9 +26,6 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>-->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Capacitaciones" asp-action="Index">Capacitaciones</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Competencias" asp-action="Index">Competencias</a>
                         </li>
                         <li class="nav-item">
@@ -39,19 +37,26 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Puestos" asp-action="Index">Puestos</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="usuarios" asp-action="Index">Usuarios</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Empleados
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Empleados" asp-action="Index">Empleados</a></li>
+                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Empleados" asp-action="Excel">Reporte</a></li>
+                            </ul>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Candidatos" asp-action="Index">Candidato</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Empleados" asp-action="Index">Empleados</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Capacitaciones" asp-action="Index">Capacitaciones</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="account" asp-action="Login">Login</a>
-                        </li>
+                        <!--<li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Registro">Login</a>
+                        </li>-->
                     </ul>
+                    <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>

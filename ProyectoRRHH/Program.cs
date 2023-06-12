@@ -1,50 +1,53 @@
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using ProyectoRRHH;
-using ProyectoRRHH.Models;
+using ProyectoRRHH.Controllers;
+using System.Reflection.Emit;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
-builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<rrhhContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("rrhh_connection")));
 
-/*builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<rrhhContext>();
+/*builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<rrhhContext>();*/
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<rrhhContext>()
+    .AddDefaultUI()
+    .AddDefaultTokenProviders();
 
 
-builder.Services.Configure<IdentityOptions>(options =>
-{
-    options.Password.RequiredLength = 8;
-    // Ajusta las opciones de contraseña según tus requisitos
-});
+// Configurar la autenticaciï¿½n y autorizaciï¿½n
 
-builder.Services.AddAuthentication()
-    .AddCookie(options =>
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddRazorPages();
+
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+.AddCookie(options =>
     {
-        options.Cookie.Name = "ProyectoRRHH.AuthCookie";
         options.Cookie.HttpOnly = true;
-        options.ExpireTimeSpan = TimeSpan.FromDays(30);
-        options.LoginPath = "/Account/Login";
-        options.AccessDeniedPath = "/Account/AccessDenied";
+        options.LoginPath = "/Identity/Account/Login";
+        //set the login path.  
+        options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+        options.LogoutPath = "/Identity/Account/Logout";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
         options.SlidingExpiration = true;
-    });
+});
 
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireAdminRole", policy =>
-        policy.RequireRole("Admin"));
-});*/
-
-builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages();
-
-builder.Services.AddSession(options =>
-{
-    options.Cookie.Name = "ProyectoRRHH.Session";
-    options.IdleTimeout = TimeSpan.FromMinutes(20);
-    options.Cookie.IsEssential = true;
+        policy.RequireRole("Admin","Candidate"));
 });
+
 
 
 //
@@ -54,25 +57,25 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
+app.UseStaticFiles();
+
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Login}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapRazorPages();
 app.Run();
 
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.UseSession();

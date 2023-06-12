@@ -1,7 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Drawing;
+using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.InkML;
+using DocumentFormat.OpenXml.Vml.Office;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +16,7 @@ using ProyectoRRHH.Models;
 
 namespace ProyectoRRHH.Controllers
 {
+    [Authorize]
     public class CandidatosController : Controller
     {
         private readonly rrhhContext _context;
@@ -17,19 +25,48 @@ namespace ProyectoRRHH.Controllers
         {
             _context = context;
         }
+        [Authorize("RequireAdminRole")]
 
         // GET: Candidatos
         public async Task<IActionResult> Index()
         {
-            var rrhhContext =  _context.candidatos
-                .Include(c => c.capacitaciones)
+            var rrhhContext = _context.candidatos
                 .Include(c => c.competencia)
                 .Include(c => c.idiomas)
                 .Include(c => c.departamentoNavigation)
                 .Include(c => c.puestoaspiraNavigation);
             return View(await rrhhContext.ToListAsync());
         }
+        [Authorize("RequireAdminRole")]
 
+        [HttpGet]
+        public async Task<IActionResult> Index(string Candsearch)
+        {
+            ViewData["candidatos"] = Candsearch;
+
+            var candquery = await _context.candidatos
+                .Include(c => c.competencia)
+                .Include(c => c.idiomas)
+                .Include(c => c.capacitaciones)
+                .Include(c => c.departamentoNavigation)
+                .Include(c => c.puestoaspiraNavigation).ToListAsync();
+
+            if (candquery.Count < 1)
+                return View(candquery);
+
+            var competencias = candquery[0].competencia.ToString();
+            var capacitaciones = candquery[0].capacitaciones.ToString();
+
+            if (!string.IsNullOrEmpty(Candsearch))
+            {
+                candquery = candquery.Where(x => (x.cedula.Contains(Candsearch)) ||
+                     x.competencia.Any(c => c.descripcion.ToLower().Trim().Contains(Candsearch.ToLower().Trim())) ||
+                     x.capacitaciones.Any(c => c.descripcion.ToLower().Trim().Contains(Candsearch.ToLower().Trim())))
+                    .ToList();
+            }
+
+            return View(candquery);
+        }
         // GET: Candidatos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -39,7 +76,6 @@ namespace ProyectoRRHH.Controllers
             }
 
             var candidato = await _context.candidatos
-                .Include(c => c.capacitaciones)
                 .Include(c => c.competencia)
                 .Include(c => c.idiomas)
                 .Include(c => c.departamentoNavigation)
@@ -57,7 +93,6 @@ namespace ProyectoRRHH.Controllers
         public IActionResult Create()
         {
             ViewData["competencias"] = new SelectList(_context.competencias, "id", "descripcion");
-            ViewData["capacitaciones"] = new SelectList(_context.capacitaciones, "id", "descripcion");
             ViewData["idiomas"] = new SelectList(_context.idiomas, "id", "nombre");
             ViewData["departamento"] = new SelectList(_context.departamentos, "departamento1", "departamento1");
             ViewData["puestoaspira"] = new SelectList(_context.puestos, "nombre", "nombre");
@@ -67,37 +102,53 @@ namespace ProyectoRRHH.Controllers
         // POST: Candidatos/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,cedula,nombre,puestoaspira,departamento,salarioaspira,explaboral,empresa,puestoocupado,fechadesde,fechahasta,salario,recomendadopor")] candidato candidato)
         {
+            string fechaDesdeString = Request.Form["fechadesde"][0];
+            if (!string.IsNullOrEmpty(fechaDesdeString) && DateOnly.TryParseExact(fechaDesdeString, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly parsedFechaDesde))
+            {
+                candidato.fechadesde = parsedFechaDesde;
+            }
+            else
+            {
+                candidato.fechadesde = null; // Establece la fecha como nula si la cadena está vacía o no se pudo convertir correctamente
+            }
+
+            string fechaHastaString = Request.Form["fechahasta"][0];
+            if (!string.IsNullOrEmpty(fechaHastaString) && DateOnly.TryParseExact(fechaHastaString, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly parsedFechaHasta))
+            {
+                candidato.fechahasta = parsedFechaHasta;
+            }
+            else
+            {
+                candidato.fechahasta = null; // Establece la fecha como nula si la cadena está vacía o no se pudo convertir correctamente
+            }
+
             if (ModelState.IsValid)
             {
                 var competenciasIds = Request.Form["competencia"].Select(x => int.Parse(x)).ToArray();
                 var competencias = _context.competencias.Where(x => competenciasIds.Contains(x.id)).ToList();
                 candidato.competencia = competencias;
 
-                var capacitacionesIds = Request.Form["capacitaciones"].Select(x => int.Parse(x)).ToArray();
-                var capacitaciones = _context.capacitaciones.Where(x => capacitacionesIds.Contains(x.id)).ToList();
-                candidato.capacitaciones = capacitaciones;
-
                 var idiomasIds = Request.Form["idiomas"].Select(x => int.Parse(x)).ToArray();
                 var idiomas = _context.idiomas.Where(x => idiomasIds.Contains(x.id)).ToList();
                 candidato.idiomas = idiomas;
-
 
                 _context.Add(candidato);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-
             ViewData["competencias"] = new SelectList(_context.competencias, "id", "descripcion", candidato.competencia);
-            ViewData["capacitaciones"] = new SelectList(_context.capacitaciones, "id", "descripcion", candidato.capacitaciones);
             ViewData["idiomas"] = new SelectList(_context.idiomas, "id", "nombre", candidato.idiomas);
             ViewData["departamento"] = new SelectList(_context.departamentos, "departamento1", "departamento1", candidato.departamento);
             ViewData["puestoaspira"] = new SelectList(_context.puestos, "nombre", "nombre", candidato.puestoaspira);
             return View(candidato);
         }
+
+
 
         // GET: Candidatos/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -113,7 +164,6 @@ namespace ProyectoRRHH.Controllers
                 return NotFound();
             }
             ViewData["competencias"] = new SelectList(_context.competencias, "id", "descripcion", candidato.competencia);
-            ViewData["capacitaciones"] = new SelectList(_context.capacitaciones, "id", "descripcion", candidato.capacitaciones);
             ViewData["idiomas"] = new SelectList(_context.idiomas, "id", "nombre", candidato.idiomas);
             ViewData["departamento"] = new SelectList(_context.departamentos, "departamento1", "departamento1", candidato.departamento);
             ViewData["puestoaspira"] = new SelectList(_context.puestos, "nombre", "nombre", candidato.puestoaspira);
@@ -153,12 +203,12 @@ namespace ProyectoRRHH.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["competencias"] = new SelectList(_context.competencias, "id", "descripcion", candidato.competencia);
-            ViewData["capacitaciones"] = new SelectList(_context.capacitaciones, "id", "descripcion", candidato.capacitaciones);
             ViewData["idiomas"] = new SelectList(_context.idiomas, "id", "nombre", candidato.idiomas);
             ViewData["departamento"] = new SelectList(_context.departamentos, "departamento1", "departamento1", candidato.departamento);
             ViewData["puestoaspira"] = new SelectList(_context.puestos, "nombre", "nombre", candidato.puestoaspira);
             return View(candidato);
         }
+        [Authorize("RequireAdminRole")]
 
         // GET: Candidatos/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -169,7 +219,6 @@ namespace ProyectoRRHH.Controllers
             }
 
             var candidato = await _context.candidatos
-                .Include(c => c.capacitaciones)
                 .Include(c => c.competencia)
                 .Include(c => c.idiomas)
                 .Include(c => c.departamentoNavigation)

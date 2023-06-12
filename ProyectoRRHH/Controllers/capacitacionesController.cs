@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using ProyectoRRHH.Models;
 
 namespace ProyectoRRHH.Controllers
 {
+    [Authorize]
     public class CapacitacionesController : Controller
     {
         private readonly rrhhContext _context;
@@ -17,11 +19,13 @@ namespace ProyectoRRHH.Controllers
         {
             _context = context;
         }
+        [Authorize("RequireAdminRole")]
 
         // GET: Capacitaciones
         public async Task<IActionResult> Index()
         {
-              return View(await _context.capacitaciones.ToListAsync());
+            var rrhhContext = _context.capacitaciones.Include(c => c.candidato);
+            return View(await rrhhContext.ToListAsync());
         }
 
         // GET: Capacitaciones/Details/5
@@ -33,6 +37,7 @@ namespace ProyectoRRHH.Controllers
             }
 
             var capacitacione = await _context.capacitaciones
+                .Include(c => c.candidato)
                 .FirstOrDefaultAsync(m => m.id == id);
             if (capacitacione == null)
             {
@@ -45,6 +50,7 @@ namespace ProyectoRRHH.Controllers
         // GET: Capacitaciones/Create
         public IActionResult Create()
         {
+            ViewData["candidato_id"] = new SelectList(_context.candidatos, "id", "cedula");
             return View();
         }
 
@@ -53,14 +59,21 @@ namespace ProyectoRRHH.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,descripcion,nivel,fechadesde,fechahasta,institucion")] capacitacione capacitacione)
+        public async Task<IActionResult> Create([Bind("id,candidato_id,descripcion,nivel,fechadesde,fechahasta,institucion")] capacitacione capacitacione)
         {
+            var fechadesde = Request.Form["fechadesde"][0];
+            capacitacione.fechadesde = DateOnly.Parse(fechadesde);
+
+            var fechahasta = Request.Form["fechahasta"][0];
+            capacitacione.fechahasta = DateOnly.Parse(fechahasta);
+
             if (ModelState.IsValid)
             {
                 _context.Add(capacitacione);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["candidato_id"] = new SelectList(_context.candidatos, "id", "cedula", capacitacione.candidato_id);
             return View(capacitacione);
         }
 
@@ -77,6 +90,7 @@ namespace ProyectoRRHH.Controllers
             {
                 return NotFound();
             }
+            ViewData["candidato_id"] = new SelectList(_context.candidatos, "id", "cedula", capacitacione.candidato_id);
             return View(capacitacione);
         }
 
@@ -85,7 +99,7 @@ namespace ProyectoRRHH.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,descripcion,nivel,fechadesde,fechahasta,institucion")] capacitacione capacitacione)
+        public async Task<IActionResult> Edit(int id, [Bind("id,candidato_id,descripcion,nivel,fechadesde,fechahasta,institucion")] capacitacione capacitacione)
         {
             if (id != capacitacione.id)
             {
@@ -112,6 +126,7 @@ namespace ProyectoRRHH.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["candidato_id"] = new SelectList(_context.candidatos, "id", "cedula", capacitacione.candidato_id);
             return View(capacitacione);
         }
 
@@ -124,6 +139,7 @@ namespace ProyectoRRHH.Controllers
             }
 
             var capacitacione = await _context.capacitaciones
+                .Include(c => c.candidato)
                 .FirstOrDefaultAsync(m => m.id == id);
             if (capacitacione == null)
             {

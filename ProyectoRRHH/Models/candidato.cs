@@ -31,13 +31,13 @@ public partial class candidato
 
     public string recomendadopor { get; set; }
 
+    public virtual ICollection<capacitacione> capacitaciones { get; set; } = new List<capacitacione>();
+
     public virtual departamento departamentoNavigation { get; set; }
 
     public virtual empleado empleado { get; set; }
 
     public virtual puesto puestoaspiraNavigation { get; set; }
-
-    public virtual ICollection<capacitacione> capacitaciones { get; set; } = new List<capacitacione>();
 
     public virtual ICollection<competencia> competencia { get; set; } = new List<competencia>();
 
