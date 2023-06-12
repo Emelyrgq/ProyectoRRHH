@@ -59,7 +59,7 @@
                 </td>
                 <td>
                     @{
-                        var fechaingreso = ((DateOnly)item.fechaingreso).ToString("dd/MM/yyyy");
+                        var fechaingreso = ((DateTime)item.fechaingreso).ToString("dd/MM/yyyy");
                     }
                     @Html.DisplayFor(modelItem => fechaingreso)
                 </td>

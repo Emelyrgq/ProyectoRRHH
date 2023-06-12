@@ -65,6 +65,10 @@ namespace ProyectoRRHH.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            if (!ModelState.IsValid)
+            {
+                return View(competencia);
+            }
             return View(competencia);
         }
 

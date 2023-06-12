@@ -58,12 +58,30 @@ namespace ProyectoRRHH.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,nombre,nivel")] idioma idioma)
         {
+            var opciones = new List<SelectListItem>
+                {
+                    new SelectListItem { Value = bool.TrueString, Text = "Principiante" },
+                    new SelectListItem { Value = bool.FalseString, Text = "Básico" },
+                    new SelectListItem { Value = bool.FalseString, Text = "Pre-intermedio" },
+                    new SelectListItem { Value = bool.FalseString, Text = "Intermedio" },
+                    new SelectListItem { Value = bool.FalseString, Text = "Intermedio-Alto" },
+                    new SelectListItem { Value = bool.FalseString, Text = "Avanzado" }
+                };
+
+            ViewBag.estado = opciones;
+
             if (ModelState.IsValid)
             {
                 _context.Add(idioma);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            if (!ModelState.IsValid)
+            {
+                return View(idioma);
+            }
+
+            ViewBag.estado = new SelectList(opciones, "Value", "Text", idioma.nivel.ToString());
             return View(idioma);
         }
 

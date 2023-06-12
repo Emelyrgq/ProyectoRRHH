@@ -121,14 +121,14 @@
                     </td>
                     <td>
                         @{
-                            var FechaDesde = ((DateOnly)item.fechadesde).ToString("dd/MM/yyyy");
+                            var FechaDesde = ((DateTime)item.fechadesde).ToString("dd/MM/yyyy");
                         }
                         @Html.DisplayFor(modelItem => FechaDesde)
                     </td>
 
                     <td>
                         @{
-                            var FechaHasta = ((DateOnly)item.fechahasta).ToString("dd/MM/yyyy");
+                            var FechaHasta = ((DateTime)item.fechahasta).ToString("dd/MM/yyyy");
                         }
                         @Html.DisplayFor(modelItem => FechaHasta)
                     </td>

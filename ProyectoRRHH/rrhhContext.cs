@@ -32,7 +32,6 @@ public partial class rrhhContext : IdentityDbContext<IdentityUser>
 
     public virtual DbSet<puesto> puestos { get; set; }
 
-    public virtual DbSet<usuario> usuarios { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -190,14 +189,6 @@ public partial class rrhhContext : IdentityDbContext<IdentityUser>
             entity.Property(e => e.salariomin).HasMaxLength(20);
         });
 
-        modelBuilder.Entity<usuario>(entity =>
-        {
-            entity.HasKey(e => e.id).HasName("pk_usuario_id");
-
-            entity.Property(e => e.email).HasMaxLength(100);
-            entity.Property(e => e.emailnormalizado).HasColumnType("character varying");
-            entity.Property(e => e.password).HasMaxLength(100);
-        });
 
         OnModelCreatingPartial(modelBuilder);
     }

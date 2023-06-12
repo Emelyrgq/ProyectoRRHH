@@ -61,11 +61,18 @@ namespace ProyectoRRHH.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,candidato_id,descripcion,nivel,fechadesde,fechahasta,institucion")] capacitacione capacitacione)
         {
+
+            if (!ModelState.IsValid)
+            {
+                ViewData["candidato_id"] = new SelectList(_context.candidatos, "id", "cedula", capacitacione.candidato_id);
+                return View(capacitacione);
+            }
+
             var fechadesde = Request.Form["fechadesde"][0];
-            capacitacione.fechadesde = DateOnly.Parse(fechadesde);
+            capacitacione.fechadesde = DateTime.Parse(fechadesde);
 
             var fechahasta = Request.Form["fechahasta"][0];
-            capacitacione.fechahasta = DateOnly.Parse(fechahasta);
+            capacitacione.fechahasta = DateTime.Parse(fechahasta);
 
             if (ModelState.IsValid)
             {
@@ -73,6 +80,7 @@ namespace ProyectoRRHH.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["candidato_id"] = new SelectList(_context.candidatos, "id", "cedula", capacitacione.candidato_id);
             return View(capacitacione);
         }

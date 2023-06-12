@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
+using Npgsql;
 using ProyectoRRHH.Models;
 
 namespace ProyectoRRHH.Controllers
@@ -50,28 +51,26 @@ namespace ProyectoRRHH.Controllers
         [HttpGet]
         public async Task<FileResult> ExportarEmpleadosAExcel([FromQuery] string fechaInicio, [FromQuery] string fechaFinal)
         {
-           /* var fechaInicioDate = DateOnly.Parse(fechaInicio);
-            var fechaFinDate = DateOnly.Parse(fechaFinal);*/
-            DateOnly? fechaInicioDate = null;
-            DateOnly? fechaFinDate = null;
+            DateTime? fechaInicioDate = null;
+            DateTime? fechaFinDate = null;
 
             if (!string.IsNullOrEmpty(fechaInicio))
             {
-                fechaInicioDate = DateOnly.Parse(fechaInicio);
+                fechaInicioDate = DateTime.Parse(fechaInicio);
             }
 
             if (!string.IsNullOrEmpty(fechaFinal))
             {
-                fechaFinDate = DateOnly.Parse(fechaFinal);
+                fechaFinDate = DateTime.Parse(fechaFinal);
             }
-            /*var tst = Request;
-            var test = Request.Form["fechaInicio"];
-            var fechaInicioDate = DateOnly.Parse(Request.Form["fechaInicio"][0]);
-            var fechaFinDate = DateOnly.Parse(Request.Form["fechaFin"][0]);*/
-
             var empleados = await _context.empleados
-                .Where(e => e.fechaingreso >= fechaInicioDate && e.fechaingreso <= fechaFinDate)
+                .Where(e => (!fechaInicioDate.HasValue || e.fechaingreso >= fechaInicioDate.Value) &&
+                            (!fechaFinDate.HasValue || e.fechaingreso <= fechaFinDate.Value))
                 .ToListAsync();
+
+            //var empleados = await _context.empleados
+            //    .Where(e => e.fechaingreso >= fechaInicioDate && e.fechaingreso <= fechaFinDate)
+            //    .ToListAsync();
 
             var nombreArchivo = $"Empleados.xlsx";
             return GenerarExcel(nombreArchivo, empleados);
@@ -97,7 +96,7 @@ namespace ProyectoRRHH.Controllers
                 var row = dataTable.NewRow();
                 row["Cedula"] = empleado.cedula;
                 row["Nombre"] = empleado.nombre;
-                row["Fecha_Ingreso"] = ((DateOnly)empleado.fechaingreso).ToString("dd/MM/yyyy");
+                row["Fecha_Ingreso"] = ((DateTime)empleado.fechaingreso).ToString("dd/MM/yyyy");
                 row["Departamento"] = empleado.departamento;
                 row["Puesto"] = empleado.puesto;
                 row["Salario_Mensual"] = empleado.salariomensual;
@@ -159,7 +158,7 @@ namespace ProyectoRRHH.Controllers
         public async Task<IActionResult> Create([Bind("id,cedula,nombre,fechaingreso,departamento,puesto,salariomensual,estado")] empleado empleado)
         {
             var fechaingreso = Request.Form["fechaingreso"][0];
-            empleado.fechaingreso = DateOnly.Parse(fechaingreso);
+            empleado.fechaingreso = DateTime.Parse(fechaingreso);
 
             var opciones = new List<SelectListItem>
                 {
@@ -169,6 +168,28 @@ namespace ProyectoRRHH.Controllers
 
             ViewBag.estado = opciones;
 
+            try
+            {
+                _context.Add(empleado);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException ex)
+            {
+                var pgException = ex.InnerException as PostgresException;
+
+                if (pgException != null && pgException.SqlState == "23505")
+                {
+                    // Handle the duplicate key violation error
+                    // Here you can show an error message to the user or take any other action
+                    ModelState.AddModelError("Cedula", "La cédula que intenta ingresar ya está registrada.");
+                }
+                else
+                {
+                    // Handle other types of DbUpdateException or rethrow the exception
+                    throw;
+                }
+            }
             if (ModelState.IsValid)
             {
                 _context.Add(empleado);
@@ -178,6 +199,9 @@ namespace ProyectoRRHH.Controllers
 
             if (!ModelState.IsValid)
             {
+                ViewData["cedula"] = new SelectList(_context.candidatos, "cedula", "cedula", empleado.cedula);
+                ViewData["departamento"] = new SelectList(_context.departamentos, "departamento1", "departamento1", empleado.departamento);
+                ViewData["puesto"] = new SelectList(_context.puestos, "nombre", "nombre", empleado.puesto);
                 return View(empleado);
             }
 
@@ -214,7 +238,7 @@ namespace ProyectoRRHH.Controllers
         public async Task<IActionResult> Edit(int id, [Bind("id,cedula,nombre,fechaingreso,departamento,puesto,salariomensual,estado")] empleado empleado)
         {
             var fechaingreso = Request.Form["fechaingreso"][0];
-            empleado.fechaingreso = DateOnly.Parse(fechaingreso);
+            empleado.fechaingreso = DateTime.Parse(fechaingreso);
 
             var opciones = new List<SelectListItem>
                 {

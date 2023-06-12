@@ -29,7 +29,7 @@
         </dt>
         <dd class = "col-sm-10">
             @{
-                var fechadesde = ((DateOnly)Model.fechadesde).ToString("dd/MM/yyyy");
+                var fechadesde = ((DateTime)Model.fechadesde).ToString("dd/MM/yyyy");
             }
             @fechadesde
         </dd>
@@ -38,7 +38,7 @@
         </dt>
         <dd class = "col-sm-10">
             @{
-                var fechahasta = ((DateOnly)Model.fechahasta).ToString("dd/MM/yyyy");
+                var fechahasta = ((DateTime)Model.fechahasta).ToString("dd/MM/yyyy");
             }
             @fechahasta
         </dd>

@@ -21,9 +21,18 @@
             <br />
             <div class="form-group">
                 <label  class="control-label">Nivel</label>
-                <input asp-for="nivel" class="form-control" />
+                <select asp-for="nivel" class="form-control">
+                        <option value="">-Selecciona</option>
+                        <option value="Principiante">A0: Principiante</option>
+                        <option value="Básico">A1-A2: Básico</option>
+                        <option value="Pre-intermedio">A2-B1: Pre-intermedio</option>
+                        <option value="Intermedio">B1: Intermedio</option>
+                        <option value="Intermedio-Alto">B2: Intermedio-Alto</option>
+                        <option value="Avanzado">C1-C2: Avanzado</option>
+                </select>
                 <span asp-validation-for="nivel" class="text-danger"></span>
             </div>
+            <br />
             <br />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-success" />

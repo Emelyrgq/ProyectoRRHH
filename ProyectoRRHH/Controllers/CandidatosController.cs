@@ -107,25 +107,11 @@ namespace ProyectoRRHH.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,cedula,nombre,puestoaspira,departamento,salarioaspira,explaboral,empresa,puestoocupado,fechadesde,fechahasta,salario,recomendadopor")] candidato candidato)
         {
-            string fechaDesdeString = Request.Form["fechadesde"][0];
-            if (!string.IsNullOrEmpty(fechaDesdeString) && DateOnly.TryParseExact(fechaDesdeString, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly parsedFechaDesde))
-            {
-                candidato.fechadesde = parsedFechaDesde;
-            }
-            else
-            {
-                candidato.fechadesde = null; // Establece la fecha como nula si la cadena está vacía o no se pudo convertir correctamente
-            }
+            var fechadesde = Request.Form["fechadesde"][0];
+            candidato.fechadesde = DateTime.Parse(fechadesde);
 
-            string fechaHastaString = Request.Form["fechahasta"][0];
-            if (!string.IsNullOrEmpty(fechaHastaString) && DateOnly.TryParseExact(fechaHastaString, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly parsedFechaHasta))
-            {
-                candidato.fechahasta = parsedFechaHasta;
-            }
-            else
-            {
-                candidato.fechahasta = null; // Establece la fecha como nula si la cadena está vacía o no se pudo convertir correctamente
-            }
+            var fechahasta = Request.Form["fechahasta"][0];
+            candidato.fechahasta = DateTime.Parse(fechahasta);
 
             if (ModelState.IsValid)
             {
@@ -141,6 +127,12 @@ namespace ProyectoRRHH.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            if (!ModelState.IsValid)
+            {
+                return View(candidato);
+            }
+
             ViewData["competencias"] = new SelectList(_context.competencias, "id", "descripcion", candidato.competencia);
             ViewData["idiomas"] = new SelectList(_context.idiomas, "id", "nombre", candidato.idiomas);
             ViewData["departamento"] = new SelectList(_context.departamentos, "departamento1", "departamento1", candidato.departamento);
@@ -177,6 +169,12 @@ namespace ProyectoRRHH.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,cedula,nombre,puestoaspira,departamento,salarioaspira,explaboral,empresa,puestoocupado,fechadesde,fechahasta,salario,recomendadopor")] candidato candidato)
         {
+            var fechadesde = Request.Form["fechadesde"][0];
+            candidato.fechadesde = DateTime.Parse(fechadesde);
+
+            var fechahasta = Request.Form["fechahasta"][0];
+            candidato.fechahasta = DateTime.Parse(fechahasta);
+
             if (id != candidato.id)
             {
                 return NotFound();
