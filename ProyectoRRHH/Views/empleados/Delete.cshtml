@@ -5,51 +5,55 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Delete</h1>
-
-<h3>Are you sure you want to delete this?</h3>
+<h1>Eliminar</h1>
+<div class="alert alert-danger" role="alert">
+    Si eliminas este empleado, se elimininará de forma permanente.
+</div>
 <div>
-    <h4>empleado</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.nombre)
+            Nombre
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.nombre)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.fechaingreso)
+        <dt class="col-sm-2">
+            Cédula
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.fechaingreso)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.cedulaNavigation.cedula)
         </dd>
+        <dt class="col-sm-2">
+            Fecha de ingreso
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                var fechaingreso = ((DateOnly)Model.fechaingreso).ToString("dd/MM/yyyy");
+            }
+            @fechaingreso
+        </dd>
+
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.salariomensual)
+            Salario mensual
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.salariomensual)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.estado)
+            Estado
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.estado)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.cedulaNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.cedulaNavigation.cedula)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.departamentoNavigation)
+            Departamento
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.departamentoNavigation.departamento1)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.puestoNavigation)
+            Puesto
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.puestoNavigation.nombre)
@@ -58,7 +62,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-primary">Volver</a>
     </form>
 </div>

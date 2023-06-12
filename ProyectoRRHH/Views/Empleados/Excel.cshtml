@@ -22,31 +22,30 @@
     </div>
 </div>
 <br />
-<hr />
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.nombre)
+                Nombre
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.fechaingreso)
+                Fecha de ingreso
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.salariomensual)
+                Salario mensual
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.estado)
+                Estado
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.cedulaNavigation)
+                Cédula
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.departamentoNavigation)
+                Departamento
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.puestoNavigation)
+                Puesto
             </th>
             <th></th>
         </tr>
@@ -79,11 +78,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.puestoNavigation.nombre)
                 </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
-                </td>
+
             </tr>
         }
     </tbody>

@@ -211,6 +211,12 @@ namespace ProyectoRRHH.Controllers
             var fechaingreso = Request.Form["fechaingreso"][0];
             empleado.fechaingreso = DateOnly.Parse(fechaingreso);
 
+            var opciones = new List<SelectListItem>
+                {
+                    new SelectListItem { Value = bool.TrueString, Text = "Activo" },
+                    new SelectListItem { Value = bool.FalseString, Text = "Inactivo" }
+                };
+
             if (id != empleado.id)
             {
                 return NotFound();
@@ -239,6 +245,7 @@ namespace ProyectoRRHH.Controllers
             ViewData["cedula"] = new SelectList(_context.candidatos, "cedula", "cedula", empleado.cedula);
             ViewData["departamento"] = new SelectList(_context.departamentos, "departamento1", "departamento1", empleado.departamento);
             ViewData["puesto"] = new SelectList(_context.puestos, "nombre", "nombre", empleado.puesto);
+            ViewBag.estado = new SelectList(opciones, "Value", "Text", empleado.estado.ToString());
             return View(empleado);
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProyectoRRHH.Models;
 
@@ -11,6 +12,7 @@ public partial class empleado
 
     public string nombre { get; set; }
 
+    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateOnly? fechaingreso { get; set; }
 
     public string departamento { get; set; }

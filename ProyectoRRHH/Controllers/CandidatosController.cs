@@ -1,7 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Drawing;
+using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.InkML;
+using DocumentFormat.OpenXml.Vml.Office;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -96,15 +102,30 @@ namespace ProyectoRRHH.Controllers
         // POST: Candidatos/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,cedula,nombre,puestoaspira,departamento,salarioaspira,explaboral,empresa,puestoocupado,fechadesde,fechahasta,salario,recomendadopor")] candidato candidato)
         {
-            var fechadesde = Request.Form["fechadesde"][0];
-            candidato.fechadesde = DateOnly.Parse(fechadesde);
+            string fechaDesdeString = Request.Form["fechadesde"][0];
+            if (!string.IsNullOrEmpty(fechaDesdeString) && DateOnly.TryParseExact(fechaDesdeString, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly parsedFechaDesde))
+            {
+                candidato.fechadesde = parsedFechaDesde;
+            }
+            else
+            {
+                candidato.fechadesde = null; // Establece la fecha como nula si la cadena está vacía o no se pudo convertir correctamente
+            }
 
-            var fechahasta = Request.Form["fechahasta"][0];
-            candidato.fechahasta = DateOnly.Parse(fechahasta);
+            string fechaHastaString = Request.Form["fechahasta"][0];
+            if (!string.IsNullOrEmpty(fechaHastaString) && DateOnly.TryParseExact(fechaHastaString, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly parsedFechaHasta))
+            {
+                candidato.fechahasta = parsedFechaHasta;
+            }
+            else
+            {
+                candidato.fechahasta = null; // Establece la fecha como nula si la cadena está vacía o no se pudo convertir correctamente
+            }
 
             if (ModelState.IsValid)
             {
@@ -126,6 +147,8 @@ namespace ProyectoRRHH.Controllers
             ViewData["puestoaspira"] = new SelectList(_context.puestos, "nombre", "nombre", candidato.puestoaspira);
             return View(candidato);
         }
+
+
 
         // GET: Candidatos/Edit/5
         public async Task<IActionResult> Edit(int? id)
