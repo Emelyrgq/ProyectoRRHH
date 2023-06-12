@@ -16,8 +16,8 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+            <div class="container-fluid px-lg-5">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ProyectoRRHH</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -31,31 +31,31 @@
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Competencias" asp-action="Index">Competencias</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="Competencias" asp-action="Index">Competencias</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Departamentos" asp-action="Index">Departamentos</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="Departamentos" asp-action="Index">Departamentos</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Idiomas" asp-action="Index">Idiomas</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="Idiomas" asp-action="Index">Idiomas</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Puestos" asp-action="Index">Puestos</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="Puestos" asp-action="Index">Puestos</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Empleados
                                 </a>
-                                <ul class="dropdown-menu text-black" aria-labelledby="navbarDropdown">
+                                <ul class="dropdown-menu text-light" aria-labelledby="navbarDropdown">
                                     <li><a class="nav-link text-dark" asp-area="" asp-controller="Empleados" asp-action="Index">Listado</a></li>
                                     <li><a class="nav-link text-dark" asp-area="" asp-controller="Empleados" asp-action="Excel">Reporte</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Candidatos" asp-action="Index">Candidatos</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="Candidatos" asp-action="Index">Candidatos</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Capacitaciones" asp-action="Index">Capacitaciones</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="Capacitaciones" asp-action="Index">Capacitaciones</a>
                             </li>
                         }
                         
@@ -65,7 +65,7 @@
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Candidatos
                                 </a>
-                                <ul class="dropdown-menu text-black" aria-labelledby="navbarDropdown">
+                                <ul class="dropdown-menu text-light" aria-labelledby="navbarDropdown">
                                     <li><a class="nav-link text-dark" asp-area="" asp-controller="Candidatos" asp-action="Create">Crear</a></li>
                                 </ul>
                             </li>
@@ -73,8 +73,8 @@
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Capacitaciones
                                 </a>
-                                <ul class="dropdown-menu text-black" aria-labelledby="navbarDropdown">
-                                    <li><a class="nav-link text-dark" asp-area="" asp-controller="Capacitaciones" asp-action="Create">Crear</a></li>
+                                <ul class="dropdown-menu text-light" aria-labelledby="navbarDropdown">
+                                    <li><a class="nav-link text-light" asp-area="" asp-controller="Capacitaciones" asp-action="Create">Crear</a></li>
                                 </ul>
                             </li>
                             

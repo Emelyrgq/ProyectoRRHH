@@ -49,6 +49,11 @@
                             <input asp-for="salarioaspira" class="form-control" />
                             <span asp-validation-for="salarioaspira" class="text-danger"></span>
                         </div>
+                        <br />
+                        <hr />
+                        <div class="form-group mb-2">
+                            <a class="btn btn-primary" asp-area="" asp-controller="Home" asp-action="Index">Volver</a>
+                        </div>
 
                     </fieldset>
                     </div>
@@ -94,11 +99,14 @@
                             <input asp-for="recomendadopor" class="form-control" />
                             <span asp-validation-for="recomendadopor" class="text-danger"></span>
                         </div>
+                        <br />
+                        <hr />
+                        <div class="form-group mb-2">
+                            <input type="submit" value="Guardar" class="btn btn-success" />
+                            <a class="btn btn-primary" asp-area="" asp-controller="Capacitaciones" asp-action="Create">Siguiente</a>
+
+                        </div>
                         </fieldset>
-                    <div class="form-group d-flex flex-column">
-                        <input type="submit" value="Crear" class="btn btn-success" />
-                        <a asp-action="Index" class="btn btn-primary">Volver</a>
-                    </div>
                 </div>
                 <div class="col-md-2"></div>
             </div>
