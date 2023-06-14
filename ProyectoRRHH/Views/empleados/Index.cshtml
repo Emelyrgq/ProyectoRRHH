@@ -15,25 +15,25 @@
     <thead>
         <tr class="table-active text-dark bg-opacity-50">
             <th>
-                <h4>Cédula</h4>
+                <h5>Cédula</h5>
             </th>
             <th>
-                <h4>Nombre</h4>
+                <h5>Nombre</h5>
             </th>
             <th>
-                <h4>Fecha de ingreso</h4>
+                <h5>Fecha de ingreso</h5>
             </th>
             <th>
-                <h4>Salario mensual</h4>
+                <h5>Salario mensual</h5>
             </th>
             <th>
-                <h4>Estado</h4>
+                <h5>Estado</h5>
             </th>
             <th>
-                <h4>Departamento</h4>
+                <h5>Departamento</h5>
             </th>
             <th>
-                <h4>Puesto</h4>
+                <h5>Puesto</h5>
             </th>
             <th></th>
         </tr>
@@ -66,9 +66,9 @@
                 @Html.DisplayFor(modelItem => item.puestoNavigation.nombre)
             </td>
                 <td>
-                    <a asp-action="Edit" class="btn btn-warning" asp-route-id="@item.id">Editar</a> |
+                    <a asp-action="Edit" asp-type="button" class="btn btn-warning" asp-route-id="@item.id"><span class="bi bi-pencil-square"></span></a> |
                     <!--<a asp-action="Details" class="btn btn-primary" asp-route-id="@item.id">Detalles</a>-->
-                    <a asp-action="Delete" asp-type="button" class="btn btn-light" asp-route-id="@item.id"><span class="bi bi-trash"></span></a>
+                    <a asp-action="Delete" asp-type="button" class="btn btn-danger" asp-route-id="@item.id"><span class="bi bi-trash"></span></a>
                 </td>
         </tr>
 }
