@@ -61,6 +61,18 @@ namespace ProyectoRRHH.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,candidato_id,descripcion,nivel,fechadesde,fechahasta,institucion")] capacitacione capacitacione)
         {
+            var opciones = new List<SelectListItem>
+                {
+                    new SelectListItem { Value = bool.TrueString, Text = "Bachiller" },
+                    new SelectListItem { Value = bool.TrueString, Text = "Bachiller" },
+                    new SelectListItem { Value = bool.FalseString, Text = "Técnico" },
+                    new SelectListItem { Value = bool.FalseString, Text = "Grado" },
+                    new SelectListItem { Value = bool.FalseString, Text = "Postgrado" },
+                    new SelectListItem { Value = bool.FalseString, Text = "Maestría" },
+                    new SelectListItem { Value = bool.FalseString, Text = "Doctorado" }
+                };
+
+            ViewBag.estado = opciones;
 
             if (!ModelState.IsValid)
             {
@@ -78,9 +90,10 @@ namespace ProyectoRRHH.Controllers
             {
                 _context.Add(capacitacione);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
 
+                TempData["Mensaje"] = "¡La capacitación ha sido guardada correctamente!";
+            }
+            ViewBag.estado = new SelectList(opciones, "Value", "Text", capacitacione.nivel.ToString());
             ViewData["candidato_id"] = new SelectList(_context.candidatos, "id", "cedula", capacitacione.candidato_id);
             return View(capacitacione);
         }

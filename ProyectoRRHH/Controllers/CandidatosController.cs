@@ -125,11 +125,14 @@ namespace ProyectoRRHH.Controllers
 
                 _context.Add(candidato);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
 
-            if (!ModelState.IsValid)
-            {
+                TempData["Mensaje"] = "¡El registro ha sido guardado correctamente!";
+
+                ViewData["competencias"] = new SelectList(_context.competencias, "id", "descripcion", candidato.competencia);
+                ViewData["idiomas"] = new SelectList(_context.idiomas, "id", "nombre", candidato.idiomas);
+                ViewData["departamento"] = new SelectList(_context.departamentos, "departamento1", "departamento1", candidato.departamento);
+                ViewData["puestoaspira"] = new SelectList(_context.puestos, "nombre", "nombre", candidato.puestoaspira);
+
                 return View(candidato);
             }
 
@@ -137,8 +140,10 @@ namespace ProyectoRRHH.Controllers
             ViewData["idiomas"] = new SelectList(_context.idiomas, "id", "nombre", candidato.idiomas);
             ViewData["departamento"] = new SelectList(_context.departamentos, "departamento1", "departamento1", candidato.departamento);
             ViewData["puestoaspira"] = new SelectList(_context.puestos, "nombre", "nombre", candidato.puestoaspira);
+
             return View(candidato);
         }
+
 
 
 
