@@ -4,35 +4,36 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<br />
 
 <h2>Empleados</h2>
 <p>
     <a asp-action="Create" class="btn btn-success">Agregar</a>
 </p>
 
-<table class="table">
+<table class="table table-bordered border-4">
     <thead>
-        <tr>
+        <tr class="table-active text-dark bg-opacity-50">
             <th>
-                Nombre
+                <h4>Cédula</h4>
             </th>
             <th>
-                Cédula
+                <h4>Nombre</h4>
             </th>
             <th>
-                Fecha de ingreso
+                <h4>Fecha de ingreso</h4>
             </th>
             <th>
-                Salario mensual
+                <h4>Salario mensual</h4>
             </th>
             <th>
-                Estado
+                <h4>Estado</h4>
             </th>
             <th>
-                Departamento
+                <h4>Departamento</h4>
             </th>
             <th>
-                Puesto
+                <h4>Puesto</h4>
             </th>
             <th></th>
         </tr>
@@ -41,10 +42,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.nombre)
+                @Html.DisplayFor(modelItem => item.cedulaNavigation.cedula)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.cedulaNavigation.cedula)
+                @Html.DisplayFor(modelItem => item.nombre)
             </td>
             <td>
                     @{
@@ -67,7 +68,7 @@
                 <td>
                     <a asp-action="Edit" class="btn btn-warning" asp-route-id="@item.id">Editar</a> |
                     <!--<a asp-action="Details" class="btn btn-primary" asp-route-id="@item.id">Detalles</a>-->
-                    <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.id">Eliminar</a>
+                    <a asp-action="Delete" asp-type="button" class="btn btn-light" asp-route-id="@item.id"><span class="bi bi-trash"></span></a>
                 </td>
         </tr>
 }

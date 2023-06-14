@@ -1,59 +1,62 @@
 ﻿@model IEnumerable<ProyectoRRHH.Models.empleado>
-
+<br />
 <h2>Reporte de empleados</h2>
 <hr />
-<div>
+<br />
 
+<div>
     <div class="row align-items-end">
         <div class="col-sm-3">
-            <label class="form-label">Fecha Inicio</label>
+            <h4 class="form-label">Fecha Inicio</h4>
             <input id="fechaInicio" class="form-control" name="fechaInicio" type="date" required />
         </div>
 
         <div class="col-sm-3">
-            <label class="form-label">Fecha Fin</label>
+            <h4 class="form-label text-black">Fecha Fin</h4>
             <input id="fechaFinal" class="form-control" name="fechaFin" type="date" required />
         </div>
 
         <div class="col-sm-3">
-            <a id="reportButton" class="btn btn-success" asp-action="ExportarEmpleadosAExcel" asp-controller="Empleados">Reportes</a>
+            <a id="reportButton" class="btn btn-success" asp-action="ExportarEmpleadosAExcel" asp-controller="Empleados">Exportar a Excel</a>
         </div>
 
     </div>
 </div>
 <br />
 
-<table class="table">
+<table class="table table-bordered border-4">
     <thead>
-        <tr>
+        <tr class="table-info text-dark opacity-35">
             <th>
-                Nombre
+                <h4>Cédula</h4>
             </th>
             <th>
-                Fecha de ingreso
+                <h4>Nombre</h4>
             </th>
             <th>
-                Salario mensual
+                <h4>Fecha de ingreso</h4>
             </th>
             <th>
-                Estado
+                <h4>Salario mensual</h4>
             </th>
             <th>
-                Cédula
+                <h4>Estado</h4>
             </th>
             <th>
-                Departamento
+                <h4>Departamento</h4>
             </th>
             <th>
-                Puesto
+                <h4>Puesto</h4>
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.cedulaNavigation.cedula)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.nombre)
                 </td>
@@ -70,15 +73,11 @@
                     @Html.DisplayFor(modelItem => item.estado)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.cedulaNavigation.cedula)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.departamentoNavigation.departamento1)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.puestoNavigation.nombre)
                 </td>
-
             </tr>
         }
     </tbody>
