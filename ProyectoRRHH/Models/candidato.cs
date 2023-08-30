@@ -12,6 +12,7 @@ public partial class candidato
     public int id { get; set; }
 
     [Required(ErrorMessage = "Debe ingresar una cédula válida")]
+    [RegularExpression(@"^\d{3}-\d{7}-\d{1}$", ErrorMessage = "El formato de la cédula es inválido.")]
     public string cedula { get; set; }
 
     [Required(ErrorMessage = "El campo 'Nombre' es requerido.")]
